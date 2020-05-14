@@ -2205,6 +2205,7 @@
     */
     const setEvent = (element, category, action, label = '') => {
       element.addEventListener('click', () => {
+        console.log(ga);
         ga.send('send', 'event', category, action, label);
       });
     }
@@ -2214,7 +2215,7 @@
     // 再入荷問い合わせ
     const noItemButton = document.querySelector('.purchaseButton__btn--noItem');
     if (noItemButton ) setEvent(noItemButton , 'purchase', 'contactForNoItem', '{ItemTitle}');
-    // 販売待ち
+    // 販売待ちニュースレター申し込み
     const comingSoonButton = document.querySelector('.purchaseButton__btn--comingSoon');
     if (noItemButton ) setEvent(noItemButton , 'purchase', 'requestNoticeForSale', '{ItemTitle}');
   }
