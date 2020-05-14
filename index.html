@@ -1,831 +1,2238 @@
 {block:NotLoadItemsPage}
-<!DOCTYPE html>
-<!--[if lt IE 7 ]><html class="ie ie6" lang="ja"> <![endif]-->
-<!--[if IE 7 ]><html class="ie ie7" lang="ja"> <![endif]-->
-<!--[if IE 8 ]><html class="ie ie8" lang="ja"> <![endif]-->
-<!--[if (gte IE 9)|!(IE)]><!--><html lang="ja"> <!--<![endif]-->
+<html>
 <head>
-	<meta charset="utf-8">
-	<meta name="copyright" content="BASE">
-	<title>{PageTitle}</title>
-	{FaviconTag}
-	{JQueryTag}
-	{CanonicalTag}
+  <title>{PageTitle}</title>
+  {GoogleAnalyticsTag}
+  {FaviconTag}
+  {JQuery3Tag}
+  {BackgroundTag}
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-5ZMDP35');</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&family=Sawarabi+Gothic&display=swap">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+  <style>
+    /*---------------------------------
 
-	
-	<meta name="BASE-Theme-Name" content="shop_100">
-	<meta name="BASE-Theme-Version" content="18">
+      Style Overview
 
-	{block:Hidden}
-	<!-- meta tag -->
-	{/block:Hidden}
+      01 - Setting
+      02 - Foundation
+      03 - Components
+      04 - Layouts
+      05 - Pages
+      06 - Utilities
 
-	{block:ItemPage}
-	{MetaItemInfoTag}
-	{/block:ItemPage}
+    ---------------------------------*/
 
-	{block:NotItemPage}
-	<meta http-equiv="X-UA-Compatible" content="IE=8 ; IE=9">
-	{MetaShopInfoTag}
-	{/block:NotItemPage}
+    /*---------------------------------
 
-	{block:AppsSearch}
-	<link rel="stylesheet" type="text/css" href="{BASEURL}/search/css/shopTemplate/search.css?{UpdateTime}">
-	{/block:AppsSearch}
+      01. Setting
 
-	{block:AppsItemLabel}
-	<link rel="stylesheet" type="text/css" href="{BASEURL}/item_label/css/ShopTemplate/style.css?{UpdateTime}">
-	<script type="text/javascript" src="{BASEURL}/item_label/js/ShopTemplate/labelpostion.js?{UpdateTime}"></script>
-	{/block:AppsItemLabel}
+    ---------------------------------*/
 
-	{block:AppsBlog}
-	<link href="{BlogFeedPageURL}" rel="alternate" type="application/rss+xml" title="Blog | {ShopName}">
-	{/block:AppsBlog}
+    /**
+    * Variables
+    */
+    :root {
+      --color-abstract-black: rgba(0, 0, 0, 0.84);
+      --color-abstract-light-black: rgba(0, 0, 0, 0.74);
+      --color-abstract-dark-gray: rgba(0, 0, 0, 0.56);
+      --color-abstract-gray: rgba(0, 0, 0, 0.4);
+      --color-abstract-light-gray: rgba(0, 0, 0, 0.24);
+      --color-abstract-bright-gray: rgba(0, 0, 0, 0.16);
+      --color-abstract-pale-gray: rgba(0, 0, 0, 0.03);
+      --color-abstract-white: #fff;
+      --color-abstract-green: #44b541;
+      --color-abstract-red: #ed143d;
+      --color-text-main: var(--color-abstract-black);
+      --color-text-sub: var(--color-abstract-dark-gray);
+      --color-text-withDarkBackground: var(--color-abstract-white);
+      --color-button-active: var(--color-abstract-light-black);
+      --color-button-hover: var(--color-abstract-black);
+      --color-button-disabled: var(--color-abstract-gray);
+      --spacing-small: 4px;;
+      --spacing-normal: 8px;;
+      --spacing-middle: 12px;;
+      --spacing-large: 16px;
+      --spacing-XLarge: 24px;
+      --spacing-XXLarge: 32px;
+      --spacing-XXXLarge: 40px;
+      --spacing-XXXXLarge: 48px;
+      --spacing-XXXXXLarge: 56px;
+      --font-size-XSmall: 1.2rem;
+      --font-size-small: 1.4rem;
+      --font-size-normal: 1.6rem;
+      --font-size-large: 1.8rem;
+      --font-size-XLarge: 2.4rem;
+      --font-size-XXLarge: 3.2rem;
+      --line-height-monolithic: 1;
+      --line-height-base: 1.5;
+      --line-height-thick: 2;
+      --letter-spacing-base: 0.04em;
+      --max-width-wide: 1024px;
+      --max-width-normal: 960px;
+      --max-width-narrow: 640px;
+      --opacity-hover: .6;
+      --transition-hover: .3s ease;
+      --aspect-ratio-golden: calc(5 / 8 * 100%);
+      --aspect-ratio-3by2: calc(2 / 3 * 100%);
+      --aspect-ratio-2by1: 50%;
+      --layer-base: 0;
+      --layer-middle: 100;
+      --layer-foreground: 200;
+      --layer-floating: 300;
+      --layer-overlay: 400;
+      --layer-diaglogue: 500;
+      --layer-cover: 600;
+      --layer-privilege: 900;
+    }
 
-	{block:IndexPage}
-	{HeadLinkNextPrevTag}
-	{/block:IndexPage}
+    /*---------------------------------
 
-	<!--[if IE]>
-	<script src="https://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-	<!--[if lt IE 8 ]>
-	<script src="https://ajax.googleapis.com/ajax/libs/chrome-frame/1/CFInstall.min.js"></script>
-	<script>window.attachEvent('onload', function(){CFInstall.check({mode:'overlay'});});</script>
-	<![endif]-->
+      02. Foundation
 
-	<script src="{BASEURL}/js/jquery.bottom-1.0.js"></script>
-	<script src="{BASEURL}/js/change_status.js?{UpdateTime}"></script>
+    ---------------------------------*/
 
-	<link rel="stylesheet" href="/css/shopTemplate/v2/common.css?{UpdateTime}">
-	
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,700">
-	<link rel="stylesheet" href="{BASEURL}/css/shopTemplate/v3/shop_100.css?{UpdateTime}">
+    /**
+    * reset
+    */
+    input[type='submit'],
+    input[type='button'] {
+      border-radius: 0;
+      -webkit-box-sizing: content-box;
+      -webkit-appearance: button;
+      appearance: button;
+      border: none;
+      box-sizing: border-box;
+      cursor: pointer;
+    }
+    input[type='submit']::-webkit-search-decoration,
+    input[type='button']::-webkit-search-decoration {
+      display: none;
+    }
+    input[type='submit']::focus,
+    input[type='button']::focus {
+      outline-offset: -2px;
+    }
+    input[type='text'],
+    textarea {
+      border-radius: 0;
+    }
 
-	{BackgroundTag}
-	<style type="text/css">
-		{block:NavColor}
-		.childCategoryList01_child,
-		.childCategoryList01_link,
-		.mainHeaderNavColor,
-		.tempTop .categoryTitle01,
-		.footerNav {
-			color: {NavColor};
-		}
-		{/block:NavColor}
-	</style>
+    /**
+    * base
+    */
+    html {
+      font-size: 62.5%;
+    }
+  
+    body {
+      padding-bottom: 1px;
+      font-family: 'Roboto', 'Sawarabi Gothic', sans-serif;
+      line-height: var(--line-height-normal);
+      letter-spacing: var(--letter-spacing-base);
+      color: var(--color-text-main);
+      text-align: justify;
+    }
 
-	<!--[if lt IE 9]>
-	<script src="//dhskp7m6mg2zv.cloudfront.net/theme_assets/shared/js/html5shiv.js"></script>
-	<![endif]-->
+    body.is-clamped {
+      height: 100vh;
+      overflow: hidden;
+    }
 
-	{GoogleAnalyticsTag}
+    /*---------------------------------
+
+      03. Component
+
+    ---------------------------------*/
+
+    /**
+    * Button
+    */
+    .Button {
+      display: inline-block;
+      padding: var(--spacing-large) var(--spacing-XXXXXLarge);
+      font-size: var(--font-size-small);
+      text-align: center;
+      text-decoration: none;
+      line-height: var(--line-height-monolithic);
+      transition: var(--transition-hover);
+    }
+
+    .Button--fill {
+      display: block;
+    }
+
+    .Button--dark {
+      background-color: var(--color-button-active);
+      color: var(--color-text-withDarkBackground);
+    }
+
+    .Button--light {
+      color: var(--color-abstract-dark-gray);
+      border: 1px solid var(--color-abstract-bright-gray);
+    }
+
+    @media screen and (min-width: 701px) {
+      .Button--dark:hover {
+        background-color: var(--color-button-hover);
+      }
+
+      .Button--light:hover {
+        color: var(--color-text-withDarkBackground);
+        background-color: var(--color-button-hover);
+      }
+    }
+
+
+    /**
+    * Built-in Buttons
+    */
+    .purchaseButton,
+    .control-panel{
+      margin-top: var(--spacing-XLarge);
+    }
+
+    .purchaseButton__btn,
+    .control-panel #buttonLeave {
+      padding:  var(--spacing-middle) 0;
+      margin-right: auto;
+      margin-left: auto;
+      font-size: var(--font-size-small);
+      background-color: var(--color-button-active);
+      appearance: none;
+      outline: none;
+      border: none;
+      cursor: pointer;
+      color: var(--color-text-withDarkBackground);
+      text-decoration: none;
+      text-align: center;
+      transition: var(--transition-hover);
+    }
+
+    @media screen and (min-width: 701px) {
+      .purchaseButton__btn:hover,
+      .control-panel #buttonLeave:hover {
+        background-color: var(--color-button-hover);
+      }
+    }
+
+    .purchaseButton__btn {
+      display: block;
+      width: 100%;
+    }
+    
+    .control-panel {
+      text-align: center;
+    }
+
+    .control-panel #buttonLeave {
+      display: inline-block;
+      padding-left: var(--spacing-XXXLarge);
+      padding-right: var(--spacing-XXXLarge);
+    }
+
+    .purchaseButton__btn--noItem {
+      transition: var(--transition-hover);
+      background-color: var(--color-button-disabled);
+    }
+
+    @media screen and (min-width: 701px) {
+      .purchaseButton__btn--noItem:hover {
+        background-color: var(--color-button-active);
+      }
+    }
+
+
+    /**
+    * Label
+    */
+    .Label {
+      display: inline-block;
+      padding: 0 var(--spacing-large);
+      border: solid 1px var(--color-abstract-dark-gray);
+      color: var(--color-abstract-dark-gray);
+      font-size: 1.2rem;
+      line-height: var(--line-height-thick);
+      border-radius: 50px;
+    }
+
+    .Label--green {
+      color: var(--color-abstract-green);
+      border-color: var(--color-abstract-green);
+    }
+
+    .Label--red {
+      color: var(--color-abstract-red);
+      border-color: var(--color-abstract-red);
+    }
+
+
+    /**
+    * Logo
+    */
+    .Logo {
+      display: block;
+      text-indent: 200%;
+      overflow: hidden;
+      white-space: nowrap;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-position: center;
+    }
+
+    .Logo--site {
+      background-image: url(https://sentogurashi.com/ec/logo_site.svg);
+    }
+
+    .Logo--stamp {
+      background-image: url(https://sentogurashi.com/ec/logo_stamp.svg);
+    }
+
+    .Logo--company {
+      background-image: url(https://sentogurashi.com/ec/logo_company.svg);
+    }
+
+
+    /**
+    * ExternalLinkBox
+    */
+    .ExternalLinkBox {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      text-decoration: none;
+      border: solid 1px var(--color-abstract-bright-gray);
+      padding: var(--spacing-XXLarge);
+    }
+
+    .ExternalLinkBox__text {
+      max-width: 320px;
+      font-size: var(--font-size-small);
+      color: var(--color-text-main);
+    }
+
+    @media screen and (max-width: 700px) {
+      .ExternalLinkBox {
+        flex-direction: column;
+      }
+  
+      .ExternalLinkBox__button {
+        margin-top: var(--spacing-large);
+      }
+    }
+
+
+    /**
+    * Content
+    */
+    .Content {
+      margin: var(--spacing-XXLarge) auto;
+    }
+
+    @media screen and (max-width: 700px) {
+      .Content {
+        margin-top: var(--spacing-XLarge);
+        margin-bottom: var(--spacing-XLarge);
+      }
+    }
+
+
+    /**
+    * Module
+    */
+    .Module {
+      margin: 0 auto;
+      max-width: var(--max-width-normal);
+    }
+
+    .Module--normal {
+      max-width: var(--max-width-normal);
+    }
+
+    .Module--narrow {
+      max-width: var(--max-width-narrow);
+    }
+
+    .Module--wide {
+      max-width: var(--max-width-wide);
+    }
+
+    .Module__item {
+      margin: var(--spacing-XXXXXLarge) 0;
+    }
+
+    @media screen and (max-width: 700px) {
+      .Module {
+        padding: 0 var(--spacing-XLarge);
+      }
+    }
+
+
+    /**
+    * NormalArticle
+    */
+    .NormalArticle {}
+
+    .NormalArticle__heading {
+      font-size: var(--font-size-XXLarge);
+      text-align: center;
+    }
+
+    .NormalArticle__text {
+      font-size: var(--font-size-normal);
+      color: var(--color-text-sub);
+      line-height: var(--line-height-normal);
+    }
+
+    .NormalArticle__text + .NormalArticle__text {
+      margin-top: 1em;
+    }
+
+    @media screen and (max-width: 700px) {
+      .NormalArticle__heading {
+        text-align: left;
+      }
+    }
+
+
+    /**
+    * SubArticle
+    */
+    .SubArticle {}
+
+    .SubArticle__heading {
+      font-size: var(--font-size-XLarge);
+    }
+
+    .SubArticle__text {
+      font-size: var(--font-size-small);
+      color: var(--color-text-sub);
+    }
+
+
+    /**
+    * GridList
+    */
+    .GridList {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, calc(50% - 20px));
+      grid-gap: var(--spacing-XXXXXLarge) var(--spacing-XXXLarge);
+      justify-content: center;
+    }
+
+    .GridList__item {
+      width: 100%;
+    }
+
+    @media screen and (max-width: 700px) {
+      .GridList {
+        display: block;
+      }
+  
+      .GridList__item + .GridList__item {
+        margin-top: var(--spacing-XXLarge);
+      }
+    }
+
+
+    /**
+    * BigBanner
+    */
+    .BigBanner {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .BigBanner::after {
+      display: block;
+      content: '';
+      padding-bottom: calc(100% * (320 / 1280));
+    }
+
+    .BigBanner__image {
+      position: absolute;
+      width: 100%;
+      height: 200%;
+      top: -50%;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    @media screen and (max-width: 700px) {
+      .BigBanner {
+        height: 230px;
+      }
+
+      .BigBanner::after {
+        content: none;
+      }
+    }
+
+
+    /**
+    * PhotoSelector
+    */
+    .PhotoSelector {
+      display: flex;
+    }
+
+    .PhotoSelector__display {
+      position: relative;
+    }
+
+    .PhotoSelector__display::after {
+      content: '';
+      display: block;
+      padding-bottom: var(--aspect-ratio-3by2);
+    }
+
+    .PhotoSelector__displayItem {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      opacity: 1;
+      transition: opacity .5s ease;
+    }
+
+    .PhotoSelector__displayItem.is-fade {
+      opacity: 0;
+    }
+
+    .PhotoSelector__displayItem.is-fadeEnd {
+      display: none;
+    }
+
+    .PhotoSelector__selectorItem {
+      position: relative;
+      width: 100%;
+      margin-left: var(--spacing-normal);
+      border-radius: 4px;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      cursor: pointer;
+      opacity: 1;
+      transition: var(--transition-hover);
+    }
+
+    @media screen and (min-width: 701px) {
+      .PhotoSelector__selectorItem:hover {
+        opacity: var(--opacity-hover);
+      }
+    }
+
+    .PhotoSelector__selectorItem:first-child {
+      margin-left: 0;
+    }
+
+    .PhotoSelector__selectorItem::before {
+      content: '';
+      display: block;
+      padding-bottom: var(--aspect-ratio-3by2);
+    }
+
+    .PhotoSelector__selectorItem.is-current::after {
+      content: '';
+      display: block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: calc(100% - 4px);
+      height: calc(100% - 4px);
+      border-radius: 4px;
+      border: solid 2px var(--color-abstract-gray);
+    }
+
+
+    /**
+    * NavigationItem
+    */
+    .NavigationItem {
+      display: block;
+      text-align: center;
+      opacity: 1;
+      transition: var(--transition-hover);
+    }
+
+    .NavigationItem:link,
+    .NavigationItem:visited {
+      text-decoration: none;
+    }
+
+    @media screen and (min-width: 701px) {
+      .NavigationItem:hover {
+        opacity: var(--opacity-hover);
+      }
+    }
+
+    .NavigationItem--withIcon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .NavigationItem__icon {
+      display: block;
+      color: var(--color-text-main);
+      margin-right: var(--spacing-normal);
+      font-size: var(--font-size-normal);
+    }
+
+    .NavigationItem__textMain {
+      font-size: var(--font-size-small);
+      color: var(--color-text-main);
+    }
+
+    .NavigationItem__textSub {
+      font-size: 1.2rem;
+      color: var(--color-text-sub);
+    }
+
+    .NavigationItem__textMain + .NavigationItem__textSub {
+      margin-top: var(--spacing-normal);
+    }
+
+    /*---------------------------------
+
+      04. Layouts
+
+    ---------------------------------*/
+
+    /**
+    * Header
+    */
+    .Header {
+      position: relative;
+      padding-top: 1px;
+      border-bottom: 1px solid var(--color-abstract-pale-gray);
+    }
+
+    .Header__title {
+    }
+
+    .Header__siteLogo {
+      display: block;
+      width: 240px;
+      height: 26px;
+      margin: 0 auto var(--spacing-XLarge);
+    }
+
+    .Header__stampLogo {
+      position: fixed;
+      top: 32px;
+      right: 0;
+      z-index: var(--layer-floating);
+      width: 160px;
+      height: 140px;
+      opacity: 1;
+      transition: var(--transition-hover);
+    }
+
+    @media screen and (min-width: 701px) {
+      .Header__stampLogo:hover{
+        opacity: var(--opacity-hover);
+      }
+    }
+
+    .Header__nav {
+      padding: var(--spacing-XXLarge);
+    }
+
+    .Header__list {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .Header__listItem {
+      margin-right: var(--spacing-XXLarge);
+    }
+
+    .Header__listItem:last-child {
+      margin-right: 0;
+    }
+
+    .Header__cartIcon {
+      display: flex;
+      align-items: center;
+      width: 20px;
+      height: 17px;
+    }
+
+    @media screen and (max-width: 700px) {
+      .Header__list {
+        display: none;
+      }
+  
+      .Header__nav {
+        padding: 0;
+      }
+  
+      .Header__siteLogo {
+        width: 190px;
+        height: 20px;
+        margin: var(--spacing-XLarge) auto;
+      }
+
+      .Header__stampLogo {
+        width: 100px;
+        height: 90px;
+        top: 60px;
+      }
+    }
+
+    /**
+    * OverlayMenu
+    */
+    .OverlayMenu {
+      display: none;
+    }
+
+    .OverlayMenu__content {
+      position: fixed;
+      display: none;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transition: opacity 1s ease;
+      background-color: rgba(255, 255, 255, .9);
+      z-index: var(--layer-overlay);
+    }
+
+    .OverlayMenu__nav {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: var(--spacing-XXXLarge);
+      height: calc(100% - var(--spacing-XXXLarge) * 2);
+    }
+
+    .OverlayMenu__subList {
+      margin-top: var(--spacing-large);
+    }
+
+    .OverlayMenu__subList--base ul {
+      display: flex;
+      justify-content: center;
+    }
+
+    .OverlayMenu__subList--base li {
+      margin-left: var(--spacing-XXXLarge);
+    }
+
+    .OverlayMenu__subList--base li:first-child {
+      margin-left: 0;
+    }
+
+    .OverlayMenu__subList--base li img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .OverlayMenu__listItem {
+      margin-top: var(--spacing-XLarge);
+    }
+
+    .OverlayMenu.is-open .OverlayMenu__content {
+      display: block;
+      opacity: 1;
+    }
+
+    .OverlayMenu__hamburger {
+      position: fixed;
+      top: 26px;
+      left: var(--spacing-XLarge);
+      z-index: var(--layer-diaglogue);
+    }
+
+    .HamburgerMenu {
+      width: 20px;
+      height: 14px;
+      transition: .5s ease
+    }
+
+    .HamburgerMenu__border {
+      position: absolute;
+      left: 0;
+      display: inline-block;
+      box-sizing: border-box;
+      width: 100%;
+      height: 2px;
+      background-color: var(--color-abstract-gray);
+      /* border-radius: 1px; */
+      transition: .5s ease
+    }
+
+    .HamburgerMenu__border:first-of-type {
+      top: 0
+    }
+
+    .OverlayMenu.is-open .HamburgerMenu__border:first-of-type {
+      transform: translateY(6px) rotate(-45deg)
+    }
+
+    .HamburgerMenu__border:nth-of-type(2) {
+      top: 6px
+    }
+
+    .OverlayMenu.is-open .HamburgerMenu__border:nth-of-type(2) {
+      opacity: 0
+    }
+
+    .HamburgerMenu__border:nth-of-type(3) {
+      bottom: 0
+    }
+
+    .OverlayMenu.is-open .HamburgerMenu__border:nth-of-type(3) {
+      transform: translateY(-6px) rotate(45deg)
+    }
+
+    @media screen and (max-width: 700px) {
+      .OverlayMenu {
+        display: block;
+      }
+    }
+    
+    /**
+    * CartIcon
+    */
+    .CartIcon > div > ul > li:first-child {
+      display: none;
+    }
+
+    .CartIcon a {
+      opacity: 1;
+      transition: var(--transition-hover);
+    }
+
+    @media screen and (min-width: 701px) {
+      .CartIcon a:hover {
+        opacity: var(--opacity-hover);
+      }
+    }
+    
+    .CartIcon img {
+      width: 20px;
+      height: 20px;
+    }
+    
+    @media screen and (max-width: 700px) {
+      .CartIcon {
+        position: fixed;
+        top: var(--spacing-XLarge);
+        right: var(--spacing-large);
+        z-index: var(--layer-floating);
+        width: 20px;
+        height: 20px;
+      }
+    
+      .CartIcon img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+
+    /**
+    * Main
+    */
+    .Main {
+    }
+
+
+    /**
+    * Footer
+    */
+    .Footer {
+      margin: var(--spacing-XXXXXLarge) 0 var(--spacing-XXLarge);
+    }
+
+    .Footer__lists {
+      padding: var(--spacing-XXXLarge) 0;
+      display: flex;
+      justify-content: space-around;
+      background-color: var(--color-abstract-pale-gray);
+    }
+
+    .Footer__list {
+      font-size: var(--font-size-small);
+      display: flex;
+      justify-content: center
+    }
+
+    .Footer__listItem {
+      margin-right: var(--spacing-XLarge);
+      font-size: 1.2rem;
+    }
+
+    .Footer__listItem:last-child {
+      margin-right: 0;
+    }
+
+    .Footer__listItem--base ul {
+      display: flex;
+    }
+
+    .Footer__listItem--base li {
+      margin-left: var(--spacing-large);
+    }
+
+    .Footer__listItem--base li:first-child {
+      margin-left: 0;
+    }
+
+    .Footer__listItem--base img {
+      width: 15px;
+      height: 15px;
+    }
+
+    .Footer__listItemLink {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      color: var(--color-text-main);
+      opacity: 1;
+      transition: var(--transition-hover);
+    }
+
+    @media screen and (min-width: 701px) {
+      .Footer__listItemLink:hover {
+        opacity: var(--opacity-hover);
+      }
+    }
+
+    .Footer__listItemIcon {
+      font-size: var(--font-size-normal);
+      margin-right: var(--spacing-small);
+    }
+
+    .Footer__copyright {
+      margin-top: var(--spacing-XLarge);
+      text-align: center;
+      color: var(--color-text-sub);
+    }
+
+    .Footer__companyLogo {
+      margin: var(--spacing-XLarge) auto;
+      width: 80px;
+      height: 75px;
+    }
+
+    @media screen and (max-width: 700px) {
+      .Footer__lists {
+        display: none;
+      }
+    }
+
+    /**
+    * Header
+    */
+    .Loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      opacity: 1;
+      z-index: var(--layer-cover);
+      background-color: var(--color-abstract-white);
+      width: 100vw;
+      height: 100vh;
+      transition: 1s opacity cubic-bezier(.17,.86,.61,.95);
+    }
+
+    .Loading.is-fade {
+      opacity: 0;
+    }
+
+    .Loading.is-fadeEnd {
+      display: none;
+    }
+
+
+    /*---------------------------------
+
+      05. Pages
+
+    ---------------------------------*/
+
+    /**
+    * TopPage - HeroImage
+    */
+    .HeroImage {
+      display: flex;
+      height: 437px;
+      margin: 0 auto;
+    }
+
+    .HeroImage__column {
+      height: 100%;
+    }
+
+    .HeroImage__column--main {
+      flex-shrink: 0;
+      background-color: var(--color-abstract-pale-gray);
+    }
+
+    .HeroImage__column--sub {
+      flex-grow: 1;
+    }
+
+    .HeroImage__message {
+      display: flex;
+      margin: 15% 0;
+      width: 365px;
+      height: 70%;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    .HeroImage__stamp {
+      width: 110px;
+      height: 96px;
+    }
+
+    .HeroImage__heading {
+      width: 220px;
+      height: 24px;
+    }
+
+    .HeroImage__statement {
+      font-size: var(--font-size-small);
+      text-align: center;
+      line-height: var(--line-height-thick);
+    }
+
+    .HeroImage__photo {
+      width: 100%;
+      height: 100%;
+      background-image: url(https://sentogurashi.com/ec/hero_photo.jpg);
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+
+    @media screen and (max-width: 700px) {
+      .HeroImage {
+        display: block;
+        height: auto;
+      }
+  
+      .HeroImage__stamp {
+        display: none;
+      }
+  
+      .HeroImage__column {
+        height: auto;
+      }
+  
+      .HeroImage__column--main {
+        /* background-color: transparent; */
+      }
+  
+      .HeroImage__photo {
+        height: auto;
+      }
+  
+      .HeroImage__photo::after {
+        content: '';
+        display: block;
+        padding-bottom: var(--aspect-ratio-golden);
+      }
+  
+      .HeroImage__message {
+        width: auto;
+        height: 170px;
+        margin: 0;
+        padding: var(--spacing-XXLarge);
+      }
+    }
+
+
+    /**
+    * TopPage - ProductList
+    */
+    .ProductList {
+      margin: var(--spacing-XXLarge) auto 0;
+    }
+
+    .ProductList__heading {
+      padding: var(--spacing-XXLarge);
+      font-size: var(--font-size-XLarge);
+      text-align: center;
+    }
+
+    @media screen and (max-width: 700px) {
+      .ProductList__list {
+        display: block;
+      }
+    }
+
+
+    /**
+    * TopPage - ProductItem
+    */
+    .ProductItem {
+      display: block;
+      text-decoration: none;
+      opacity: 1;
+      transition: var(--transition-hover);
+    }
+
+    @media screen and (min-width: 701px) {
+      .ProductItem:hover {
+        opacity: var(--opacity-hover);
+      }
+    }
+
+    .ProductItem__text {
+      margin-top: var(--spacing-normal);
+      font-size: 1.8rem;
+      line-height: var(--line-height-base);
+      color: var(--color-text-main);
+    }
+
+    .ProductItem__title {
+      color: var(--color-text-sub);
+    }
+
+    .ProductItem__price {
+      color: var(--color-text-sub);
+    }
+
+    .ProductItem__image {
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      border-radius: 4px;
+    }
+
+    .ProductItem__image::after {
+      content: '';
+      display: block;
+      padding-bottom: var(--aspect-ratio-2by1);
+    }
+
+    .ProductItem__meta {
+      margin-top: var(--spacing-XLarge);
+      font-size: var(--font-size-small);
+      line-height: var(--line-height-thick);
+    }
+
+    .ProductItem__metaItem {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: var(--spacing-normal);
+    }
+
+    @media screen and (max-width: 700px) {
+      .ProductItem {
+        margin-bottom: var(--spacing-XXXXXLarge);
+      }
+    }
+
+
+    /**
+    * DetailPage - ProductDetail
+    */
+    .ProductDetail {
+      margin: 0 auto;
+      display: grid;
+      column-gap: 88px;
+      row-gap: var(--spacing-normal);
+      grid-template-columns: 1fr 314px;
+      grid-template-rows: 1fr;
+      grid-template-areas:
+        "hero hero"
+        "mainA sub"
+        "mainB sub";
+    }
+
+    .ProductDetail__photoSelector {
+      grid-area: mainA;
+    }
+
+    .ProductDetail__main {
+      grid-area: mainB;
+      margin-top: var(--spacing-XXXLarge);
+    }
+
+    .ProductDetail__sub {
+      grid-area: sub;
+      margin-top: var(--spacing-XXXLarge);
+    }
+
+    .ProductDetail__hero {
+      grid-area: hero;
+    }
+
+    .ProductDetail__mainHeading {
+      font-size: var(--font-size-XXLarge);
+      line-height: var(--line-height-base);
+    }
+
+    .ProductDetail__mainText {
+      font-size: var(--font-size-normal);
+      line-height: var(--line-height-base);
+      color: var(--color-text-sub);
+    }
+
+    .ProductDetail__mainHeading + .ProductDetail__mainText {
+      margin-top: var(--spacing-XXXXLarge);
+    }
+
+    .ProductDetail__label {
+      margin-bottom: var(--spacing-large);
+    }
+
+    .ProductDetail__title {
+      font-size: var(--font-size-XLarge);
+      line-height: var(--line-height-base);
+    }
+
+    .ProductDetail__price {
+      margin-top: var(--spacing-middle);
+      font-size: var(--font-size-XLarge);
+      color: var(--color-text-sub);
+    }
+
+    @media screen and (max-width: 700px) {
+      .ProductDetail {
+        column-gap: 0;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
+        grid-template-areas:
+          "hero"
+          "mainA"
+          "sub"
+          "mainB";
+      }
+      
+      .ProductDetail__mainHeading {
+        font-size: var(--font-size-XLarge);
+      }
+  
+      .ProductDetail__mainHeading + .ProductDetail__mainText {
+        margin-top: var(--spacing-XLarge);
+      }
+    }
+
+
+    /**
+    * DetailPage - Purchase
+    */
+    #itemAttention{
+      margin-top: var(--spacing-large);
+    }
+
+    #itemAttention .attention,
+    .preOrder {
+      font-size: 1.2rem;
+      color: var(--color-text-sub);
+      line-height: var(--line-height-base);
+    }
+
+    #itemAttention .attention + .attention {
+      margin-top: var(--spacing-small);
+    }
+
+    #itemSelect {
+      color: var(--color-text-sub);
+      margin-top: var(--spacing-XXXLarge);
+    }
+
+    #amountSelectWrap {
+      font-size: var(--font-size-normal);
+      display: inline-flex;
+      position: relative;
+      align-items: center;
+    }
+    
+    #amountSelectWrap::after {
+      content: '';
+      display: block;
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      background-repeat: no-repeat;
+      background-image: url(https://sentogurashi.com/ec/icon_angle_down.svg);
+      background-position: center;
+      background-size: contain;
+    }
+
+    #amountSelectWrap > label {
+      display: block;
+    }
+
+    #amountSelect {
+      display: block;
+      width: 80px;
+      margin-left: var(--spacing-normal);
+      padding: var(--spacing-normal);
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      outline: none;
+      background: transparent;
+      font-size: var(--font-size-normal);
+      border: 1px solid var(--color-abstract-light-gray);
+      box-sizing: border-box;
+      background-color: var(--color-abstract-white);
+      border-radius: 0;
+    }
+
+    #openIllegalReport,
+    .btnBase.caution {
+      display: block;
+      margin-top: var(--spacing-XLarge);
+      text-align: center;
+      color: var(--color-text-main);
+      opacity: 1;
+      transition: var(--transition-hover);
+    }
+
+    @media screen and (min-width: 701px) {
+      #openIllegalReport:hover,
+      .btnBase.caution:hover {
+        opacity: var(--opacity-hover);
+      }
+    }
+
+    /**
+    * Privacy & Law & Contact Pages
+    */
+    #privacy,
+    #law,
+    .inquirySection {
+      line-height: var(--line-height-base);
+    }
+
+    #privacy h2,
+    #law h2,
+    .inquirySection h1 {
+      font-size: var(--font-size-XXLarge);
+    }
+
+    #privacy dt,
+    #law h3,
+    .inquirySection dt,
+    .inquirySection dd {
+      display: block;
+      margin-top: var(--spacing-XXXLarge);
+      font-size: var(--font-size-small);
+      color: var(--color-text-sub);
+    }
+
+    .inquirySection dt {
+      color: var(--color-abstract-gray);
+    }
+
+    .privacy_intro,
+    #privacy dd,
+    #law p,
+    .inquirySection p,
+    .inquirySection input[type=text],
+    .inquirySection textarea {
+      display: block;
+      margin-top: var(--spacing-large);
+      font-size: var(--font-size-normal);
+    }
+
+    #privacy ul {
+      margin: var(--spacing-large);
+    }
+
+    #privacy li {
+      margin-top: var(--spacing-small);
+      font-size: 1.2rem;
+    }
+
+    #privacy li:first-child {
+      margin-top: 0;
+    }
+
+    .inquirySection input[type=text],
+    .inquirySection textarea {
+      width: 100%;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      border-bottom: solid 1px var(--color-abstract-light-gray);
+      font-size: var(--font-size-small);
+      padding: var(--spacing-normal);
+    }
+
+    .inquirySection input[type=text]:focus,
+    .inquirySection textarea:focus {
+      outline: none;
+    }
+
+    /*---------------------------------
+
+      06. Utilities
+
+    ---------------------------------*/
+    .u-spacingNormalT {
+      margin-top: var(--spacing-normal);
+    }
+
+    .u-spacingLargeT {
+      margin-top: var(--spacing-large);
+    }
+
+    .u-spacingXLargev {
+      margin-top: var(--spacing-XLarge);
+    }
+  </style>
+  {block:ItemPage}
+    {block:ItemImage3}
+      <link rel="preload" as="image" href="{ItemImage3URL-origin}">
+    {/block:ItemImage3}
+    {block:ItemImage4}
+      <link rel="preload" as="image" href="{ItemImage4URL-origin}">
+    {/block:ItemImage4}
+    {block:ItemImage5}
+      <link rel="preload" as="image" href="{ItemImage5URL-origin}">
+    {/block:ItemImage5}
+  {/block:ItemPage}
 </head>
-<body class="tempTop template{block:ItemPage} tempDetail{/block:ItemPage} theme--0">
 
-	<ul class="headNavi">
-		{block:AppsSearch}
-		<li class="itemSearch">
-			<form id="x_itemSearchForm" class="itemSearch__form" action="{SearchPageURL}" method="get">
-				<input class="itemSearch__field" type="text" name="q" placeholder="Search" value="{IndexPageSearch}">
-				<button class="itemSearch__btn" type="submit"><span id="x_iconSearch" class="si-search"></span></button>
-			</form>
-		</li>
-		{/block:AppsSearch}
-		{block:AppsI18n}
-		<li class="languageSelect">
-			{AppsI18nTag}
-		</li>
-		{/block:AppsI18n}
-	</ul>
+<body>
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5ZMDP35"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <div class="OverlayMenu js-OverlayMenu">
+    <div class="OverlayMenu__content">
+      <nav class="OverlayMenu__nav">
+        <p class="OverlayMenu__title">
+          <a href="{IndexPageURL}" class="OverlayMenu__siteLogo Logo Logo--site">{LogoTag}</a>
+        </p>
+        <ul class="OverlayMenu__list">
+          <li class="OverlayMenu__listItem">
+            <a class="OverlayMenu__listItemInner NavigationItem" href="{IndexPageURL}">
+              <div class="NavigationItem__textMain">商品一覧</div>
+            </a>
+          </li>
+          <li class="OverlayMenu__listItem">
+            <a class="OverlayMenu__listItemInner NavigationItem" href="{AboutPageURL}">
+              <div class="NavigationItem__textMain">私たちについて</div>
+            </a>
+          </li>
+          <li class="OverlayMenu__listItem">
+            <a class="OverlayMenu__listItemInner NavigationItem" href="{ContactPageURL}">
+              <div class="NavigationItem__textMain">お問い合わせ</div>
+            </a>
+          </li>
+        </ul>
+        <ul class="OverlayMenu__list OverlayMenu__list--sub">
+          <li class="OverlayMenu__listItem">
+            <a class="NavigationItem" href="{PrivacyPageURL}">
+              <p class="NavigationItem__textSub">{lang:Privacy}</p>
+            </a>
+          </li>
+          <li class="OverlayMenu__listItem">
+            <a class="NavigationItem" href="{LawPageURL}">
+              <p class="NavigationItem__textSub">{lang:Law}</p>
+            </a>
+          </li>
+          <li class="OverlayMenu__listItem">
+            <a class="NavigationItem" href="https://sentogurashi.com/" target="_blank">
+              <p class="NavigationItem__textSub">運営元 : 株式会社銭湯ぐらし</p>
+            </a>
+          </li>
+          <li class="OverlayMenu__listItem">
+            <a class="NavigationItem NavigationItem--withIcon" href="https://twitter.com/sentogurashi" target="_blank">
+              <i class="NavigationItem__icon fab fa-twitter"></i>
+              <p class="NavigationItem__textSub">Twitter</p>
+            </a>
+          </li>
+          <li class="OverlayMenu__listItem">
+            <a class="NavigationItem NavigationItem--withIcon" href="https://www.facebook.com/sentogurashi/" target="_blank">
+              <i class="NavigationItem__icon fab fa-facebook"></i>
+              <p class="NavigationItem__textSub">Facebook</p>
+            </a>
+          </li>
+          <li class="OverlayMenu__listItem">
+            <a class="NavigationItem NavigationItem--withIcon" href="https://www.instagram.com/sentogurashi/?hl=ja" target="_blank">
+              <i class="NavigationItem__icon fab fa-instagram"></i>
+              <p class="NavigationItem__textSub">Instagram</p>
+            </a>
+          </li>
+        </ul>
+        <div class="OverlayMenu__sublist OverlayMenu__sublist--base">{BASEMenuTag}</div>
+      </nav>
+    </div>
+    <ul class="OverlayMenu__hamburger HamburgerMenu js-OverlayMenu__hamburger">
+      <li class="HamburgerMenu__border"></li>
+      <li class="HamburgerMenu__border"></li>
+      <li class="HamburgerMenu__border"></li>
+    </ul>
+    <div class="Header__cartIcon CartIcon">{BASEMenuTag}</div>
+  </div>
+  <header class="Header">
+    <nav class="Header__nav">
+      <p class="Header__title">
+        <a href="{IndexPageURL}" class="Header__siteLogo Logo Logo--site">{LogoTag}</a>
+      </p>
+      <ul class="Header__list">
+        <li class="Header__listItem">
+          <a class="Header__listItemInner NavigationItem" href="{IndexPageURL}">
+            <div class="NavigationItem__textMain">商品一覧</div>
+          </a>
+        </li>
+        <li class="Header__listItem">
+          <a class="Header__listItemInner NavigationItem" href="{AboutPageURL}">
+            <div class="NavigationItem__textMain">私たちについて</div>
+          </a>
+        </li>
+        <li class="Header__listItem">
+          <a class="Header__listItemInner NavigationItem" href="{ContactPageURL}">
+            <div class="NavigationItem__textMain">お問い合わせ</div>
+          </a>
+        </li>
+        <li class="Header__listItem">
+          <div class="Header__cartIcon CartIcon">{BASEMenuTag}</div>
+        </li>
+      </ul>
+    </nav>
+    <a class="Header__stampLogo Logo Logo--stamp" href="{IndexPageURL}"></a>
+  </header>
+  <main class="Main">
 
-	{BASEMenuTag}
+  {block:IndexPage}
+    {block:HasItems}
+    <section class="Content">
+      <div class="Module Module--wide">
+        <div class="HeroImage">
+          <div class="HeroImage__column HeroImage__column--sub">
+            <div class="HeroImage__photo"></div>
+          </div>
+          <div class="HeroImage__column HeroImage__column--main">
+            <div class="HeroImage__message">
+              <div class="HeroImage__stamp Logo Logo--stamp"></div>
+              <h1 class="HeroImage__heading Logo Logo--site">銭湯のあるくらし便</h1>
+              <p class="HeroImage__statement">いつもの毎日がちょっと特別になる。<br>「ケの日のハレ」を届けます。</p>
+              <a class="HeroImage__button Button Button--light" href="{AboutPageURL}">もっと読む</a>
+            </div>
+          </div>
+        </div>
+        <!-- / .HeroImage -->
 
-	<link rel="stylesheet" type="text/css" href="{BASEURL}/css/colorbox.css">
-	<link rel="stylesheet" href="{BASEURL}/css/bootstrap.min.css">
-	<link rel="stylesheet" href="{BASEURL}/css/bootstrap-select.min.css">
+      </div>
+      <!-- / .Module -->
 
-	{block:IndexPage}
-	<span id="max_page" style="display: none;">{MaxPageNumber}</span>
-	<span id="next_page" style="display: none;">{NextPageNumber}</span>
-	{/block:IndexPage}
+      <div class="Module">
+        <div class="ProductList">
+          <h2 class="ProductList__heading">商品一覧</h2>
+          <ul class="ProductList__list GridList">
+            {block:Items}
+            <li class="ProductList__item GridList__item">
+              <a class="ProductItem" href="{ItemPageURL}">
+                <div class="ProductItem__image" style="background-image:url({block:ItemImage1}{ItemImage1URL-640}{/block:ItemImage1}{block:NoItemImage1}{ItemNoImageURL}{/block:NoItemImage1});"></div>
+                <div class="ProductItem__info">
+                  <div class="ProductItem__meta">
+                    {block:HasItemStock}
+                      {block:ItemWatingForSale}
+                        <p class="ProductItem__metaItem Label Label--green">近日発売</p>
+                      {/block:ItemWatingForSale}
+                      {block:ItemNowOnSale}
+                        {block:ItemPreOrder}
+                            <p class="ProductItem__metaItem Label Label--green">{lang:PreOrderItem}</p>
+                        {/block:ItemPreOrder}
+                        {block:ItemLottery}
+                          <p class="ProductItem__metaItem Label">{lang:LotteryItem}</p>
+                        {/block:ItemLottery}
+                      {/block:ItemNowOnSale}
+                      {block:ItemEndOfSale}
+                        <p class="ProductItem__metaItem Label Label--red">売り切れ</p>
+                      {/block:ItemEndOfSale}
+                    {/block:HasItemStock}
+                    {block:NoItemStock}
+                      {block:ItemWatingForSale}
+                        <p class="ProductItem__metaItem ProductItem__label Label Label--green">近日発売</p>
+                      {/block:ItemWatingForSale}
+                      {block:ItemNowOnSale}
+                        <p class="ProductItem__metaItem Label Label--red">売り切れ</p>
+                      {/block:ItemNowOnSale}
+                      {block:ItemEndOfSale}
+                        <p class="ProductItem__metaItem Label Label--red">販売終了</p>
+                      {/block:ItemEndOfSale}
+                    {/block:NoItemStock}
+                    <p class="ProductItem__metaItem ProductItem__title">{ItemTitle}</p>
+                    <p class="ProductItem__metaItem ProductItem__price">{ItemPrice}</p>
+                  </div>
+                  <p class="ProductItem__text js-CuttoffTarget--heading">{ItemDetail}</p>
+                </div>
+              </a>
+              <!-- /ProductItem -->
+            </li>
+            <!-- /ProductList__item -->
+            {/block:Items}
+          </ul>
+        </div>
+      </div>
+      {/block:HasItems}
+      {block:NoItems}
+      <div class="tmpBox">
+        <p>{lang:NoItemsMessage}</p>
+      </div>
+      {/block:NoItems}
+    </section>
+    {/block:IndexPage}
 
-	<!-- script:Facebook -->
-	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
-	var js, fjs = d.getElementsByTagName(s)[0];
-	if (d.getElementById(id)) return;
-	js = d.createElement(s); js.id = id;
-	js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&appId=350947278320210&version=v2.0";
-	fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));</script>
+    {block:ItemPage}
+      <section class="Content">
+        <div class="Module">
+          {IllegalReportMessageTag}
+          <div class="ProductDetail">
+            <ul class="ProductDetail__hero ProductDetail__hero PhotoSelector__display js-PhotoSelector__display">
+              <li class="PhotoSelector__displayItem js-PhotoSelector__displayItem--background" style="background-image:url({block:ItemImage2}{ItemImage2URL-origin}{/block:ItemImage2}{block:NoItemImage2}{ItemNoImageURL}{/block:NoItemImage2});"></li>
+              <li class="PhotoSelector__displayItem js-PhotoSelector__displayItem--foreground" style="background-image:url({block:ItemImage2}{ItemImage2URL-origin}{/block:ItemImage2}{block:NoItemImage2}{ItemNoImageURL}{/block:NoItemImage2});"></li>
+            </ul>
+            <aside class="ProductDetail__sub">
+              {block:ItemEndOfSale}
+                <p class="ProductDetail__label Label Label--red">売り切れ</p>
+              {/block:ItemEndOfSale}
+              {block:ItemNowOnSale}{block:NoItemStock}
+                <p class="ProductDetail__label Label Label--red">売り切れ</p>
+              {/block:NoItemStock}{/block:ItemNowOnSale}
+              <h2 class="ProductDetail__title">{ItemTitle}</h2>
+              <p class="ProductDetail__price">{ItemPrice}</p>
+              {ItemAttentionTag}
+              {block:PurchaseForm}
+                {ItemSelectTag}
+                {PurchaseButton}
+              {/block:PurchaseForm}
+              {IllegalReportTag}
+            </aside>
+            
+            <ul class="ProductDetail__photoSelector PhotoSelector js-PhotoSelector">
+              {block:ItemImage2}
+                <li class="PhotoSelector__selectorItem js-PhotoSelector__selectorItem" style="background-image:url({ItemImage2URL-300});" data-src="{ItemImage2URL-origin}">
+                </li>
+              {/block:ItemImage2}
+              {block:ItemImage3}
+                <li class="PhotoSelector__selectorItem js-PhotoSelector__selectorItem" style="background-image:url({ItemImage3URL-300});" data-src="{ItemImage3URL-origin}">
+                </li>
+              {/block:ItemImage3}
+              {block:ItemImage4}
+                <li class="PhotoSelector__selectorItem js-PhotoSelector__selectorItem" style="background-image:url({ItemImage4URL-300});" data-src="{ItemImage4URL-origin}">
+                </li>
+              {/block:ItemImage4}
+              {block:ItemImage5}
+                <li class="PhotoSelector__selectorItem js-PhotoSelector__selectorItem" style="background-image:url({ItemImage5URL-300});" data-src="{ItemImage5URL-origin}">
+                </li>
+              {/block:ItemImage5}
+            </ul>
+            <article class="ProductDetail__main">
+              <h3 class="ProductDetail__mainHeading js-CuttoffTarget--heading">{ItemDetail}</h3>
+              <p class="ProductDetail__mainText js-CuttoffTarget--mainText">{ItemDetail}</p>
+            </article>
+          </div>
+        </div>
+      </section>
+    {/block:ItemPage}
 
-	<!-- script:Twitter -->
-	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+    {block:AboutPage}
+      <section class="Content">
+        <!--{ShopIntroduction}-->
+        <article class="NormalArticle">
+          <div class="Module Module--narrow">
+            <h2 class="NormalArticle__heading Module__item">はじめまして、銭湯ぐらしです。</h2>
+            <div class="Module__item">
+              <p class="NormalArticle__text">昭和8年から高円寺で愛されてきた銭湯・小杉湯で出会った私たちは、「小杉湯となり」という複合施設を運営しています。</p>
+              <p class="NormalArticle__text">この場所は、銭湯がまちに開かれたお風呂であるように、それぞれのくらしを持ち寄れる、“まちに開かれたもうひとつの家”のような場所を目指しています。</p>
+              <p class="NormalArticle__text">大きなお風呂に入ったあとに、最高の一杯を飲んだり、季節を感じるものに出会ったり。<br>私たちが「小杉湯となり」を通して体験してほしかった時間を、この場所に来られない方にも届けたい。</p>
+              <p class="NormalArticle__text">そんな想いから、私たちが銭湯のあるくらしの中で『心地いい！』と感じたものだけをセレクトしてお届けする、「銭湯のあるくらし便」が生まれました。</p>
+              <p class="NormalArticle__text">銭湯のとなりにくらしているような、
+日々のすてきな余白があなたのおうちにも届きますように。
+</p>
+            </div>
+            <a class="ExternalLinkBox Module__item" href="https://note.com/sentogurashi/n/n56a3ff21db36" target="_blank">
+              <p class="ExternalLinkBox__text">ここに書ききれない想いをnoteにて公開しております。ご一読いただけましたら幸いです。</p>
+              <div class="ExternalLinkBox__button Button Button--dark">noteで続きを読む</div>
+            </a>
+          </div>
+          <!-- / .Module -->
+      
+          <div class="BigBanner js-parallaxRoot">
+            <div class="BigBanner__image js-parallax" style="background-image:url(https://sentogurashi.com/ec/about_big_banner.jpg)"></div>
+          </div>
 
-	<header id="mainHeader">
-		<h1><a href="{IndexPageURL}" id="logo">{LogoTag}</a></h1>
-	</header>
+          <div class="Module Module--narrow">
+            <h2 class="NormalArticle__heading Module__item">いつもの毎日がちょっと特別になる。<br>「ケの日のハレ」を届けます。</h2>
+            <p class="NormalArticle__text Module__item">スマホやパソコンから離れて、大きなお風呂でゆっくりしたり、
+湯上りに最高の一杯を味わったり。<br>日常（ケの日）を特別な日（ハレの日）にしてくれる銭湯のように、
+あなたの毎日がちょっと特別になる体験をお届けします。</p>
+          </div>
+          <!-- / .Module -->
 
-	<div class="container">
-		<nav id="main_navigation">
-			<ul class="row">
-				<li class="column"><a class="mainHeaderNavColor" href="{IndexPageURL}">home</a></li>
-				<li class="column"><a class="mainHeaderNavColor" href="{AboutPageURL}">about</a></li>
-				{block:AppsBlog}
-				<li class="column"><a class="mainHeaderNavColor" href="{BlogPageURL}">blog</a></li>
-				{/block:AppsBlog}
-				{block:AppsCoinFunding}
-				<li class="column"><a class="mainHeaderNavColor" href="{CoinFundingPageURL}">coin</a></li>
-				{/block:AppsCoinFunding}
-				{block:AppsItemCategory}
-				<li class="column">
-					<div id="category-menu">
-						<span class="mainHeaderNavColor">category</span>
-						<div class="category-list">
-							{AppsItemCategoryCategoriesTag}
-						</div>
-					</div>
-				</li>
-				{/block:AppsItemCategory}
-				<li class="column"><a class="mainHeaderNavColor" href="{ContactPageURL}">contact</a></li>
-			</ul>
-		</nav>
+          <div class="Module Module--normal u-spacingXLargev">
+            <ul class="GridList">
+              <li class="GridList__item">
+                <div class="SubArticle">
+                  <h3 class="SubArticle__heading">からだとこころを<br>ゆるめるもの</h3>
+                  <p class="SubArticle__text u-spacingLargeT">銭湯で交互浴をしたあとは、心も体もリラックスできて、ぐっすり眠ることができます。おうちにいても、銭湯に入った後のようにほんわかゆるむような、ホッとひと息つけるものを選んでいます。</p>
+                </div>
+              </li>
+              <li class="GridList__item">
+                <div class="SubArticle">
+                  <h3 class="SubArticle__heading">まっすぐで<br>信念のあるもの</h3>
+                  <p class="SubArticle__text u-spacingLargeT">一つのものを長く続けてゆくことは本当に地道な毎日の積み重ねであり、長く愛さ続けてゆくものには必ず理由があると思います。銭湯のように、時代を超えて残ってきたものや、まっすぐ信念のあるものたちを集めました。</p>
+                </div>
+              </li>
+              <li class="GridList__item">
+                <div class="SubArticle">
+                  <h3 class="SubArticle__heading">日々の季節を<br>感じるもの</h3>
+                  <p class="SubArticle__text u-spacingLargeT">夏の菖蒲湯、冬の柚子湯。日本のお風呂は、季節に合わせて楽しみ方が変わります。湯上りの時間ですらも、冬は外の冷たい空気を心地よく感じたり、夏は夜風が気持ちよかったり。日々見過ごしてしまいそうな季節をお風呂とともに感じることができる体験をお届けします。</p>
+                </div>
+              </li>
+              <li class="GridList__item">
+                <div class="SubArticle">
+                  <h3 class="SubArticle__heading">くらしを100年<br>続けてゆけるもの</h3>
+                  <p class="SubArticle__text u-spacingLargeT">これから100年後にも銭湯のあるくらしを続けてゆくために、お風呂を通してつながった生産者さんとつくる入浴剤やゴミを減らす梱包など、環境にやさしいものを選んでいます。</p>
+                </div>
+              </li>
+            </ul>
+          </div>
+          <!-- / .Module -->
+        </article>
+      </section>
+    {/block:AboutPage}
 
-		{block:AppsItemCategory}
-		{block:IndexPageCategory}
-		<h2 class="categoryTitle01">{IndexPageCategory}</h2>
+    {block:ContactPage}
+      <section class="Content">
+        <div class="Module">
+          {ContactContentsTag}
+        </div>
+      </section>
+    {/block:ContactPage}
 
-		{block:HasAppsItemCategoryChildCategories}
-		<ul class="childCategoryList01">
-			{block:AppsItemCategoryChildCategories}
-			<li class="childCategoryList01_child"><a href="{AppsItemCategoryChildCategoryPageURL}" class="childCategoryList01_link">{AppsItemCategoryChildCategoryName}</a></li>
-			{/block:AppsItemCategoryChildCategories}
-		</ul>
-		{/block:HasAppsItemCategoryChildCategories}
+    {block:PrivacyPage}
+      <section class="Content">
+        <div class="Module">
+          {PrivacyContentsTag}
+        </div>
+      </section>
+    {/block:PrivacyPage}
 
-		{/block:IndexPageCategory}
-		{/block:AppsItemCategory}
+    {block:LawPage}
+      <section class="Content">
+        <div class="Module">
+          {LawContentsTag}
+        </div>
+      </section>
+    {/block:LawPage}
+  </main>
 
-		{block:IndexPage}
+  <footer class="Footer">
+    <aside class="Footer__lists">
+      <ul class="Footer__list">
+        <li class="Footer__listItem">
+          <a class="Footer__listItemLink" href="{PrivacyPageURL}">
+            <p class="Footer__listItemText">{lang:Privacy}</p>
+          </a>
+        </li>
+        <li class="Footer__listItem">
+          <a class="Footer__listItemLink" href="{LawPageURL}">
+            <p class="Footer__listItemText">{lang:Law}</p>
+          </a>
+        </li>
+        <li class="Footer__listItem Footer__listItem--base">
+          {BASEMenuTag}
+        </li>
+      </ul>
+      <ul class="Footer__list">
+        <li class="Footer__listItem">
+          <a class="Footer__listItemLink" href="https://sentogurashi.com/" target="_blank">運営元 : 株式会社銭湯ぐらし</a>
+        </li>
+        <li class="Footer__listItem">
+          <a class="Footer__listItemLink Footer__listItemLink--withIcon" href="https://twitter.com/sentogurashi" target="_blank">
+            <i class="Footer__listItemIcon fab fa-twitter"></i>
+            <p class="Footer__listItemText">Twitter</p>
+          </a>
+        </li>
+        <li class="Footer__listItem">
+          <a class="Footer__listItemLink Footer__listItemLink--withIcon" href="https://www.facebook.com/sentogurashi/" target="_blank">
+            <i class="Footer__listItemIcon fab fa-facebook"></i>
+            <p class="Footer__listItemText">Facebook</p>
+          </a>
+        </li>
+        <li class="Footer__listItem">
+          <a class="Footer__listItemLink Footer__listItemLink--withIcon" href="https://www.instagram.com/sentogurashi/?hl=ja" target="_blank">
+            <i class="Footer__listItemIcon fab fa-instagram"></i>
+            <p class="Footer__listItemText">Instagram</p>
+          </a>
+        </li>
+      </ul>
+    </aside>
+    <a class="Footer__companyLogo Logo Logo--company" href="https://sentogurashi.com/" target="_blank"></a>
+    <div class="Footer__copyright"><small>© {ShopName} All rights reserved.</small></div>
+  </footer>
+  <div class="Loading js-Loading"></div>
+<script>
+//@ts-check
+(() => {
 
-		{block:AppsBlogArticleIsPinned}
-		{block:NoIndexPageCategory}
-		{block:NoIndexPageSearch}
-		<div class="pinnedBlog">
-			<p class="pinnedBlog_title mainHeaderNavColor normal">
-				<a href="{AppsBlogArticlePageURL}">{AppsBlogArticleTitle}</a>
-			</p>
-		</div>
-		{/block:NoIndexPageSearch}
-		{/block:NoIndexPageCategory}
-		{/block:AppsBlogArticleIsPinned}
+  /**
+  * スリープ
+  * @param {number} msec
+  * @return {Promise<void>}
+  */
+  const sleep = (msec) => new Promise(resolve => {
+    window.setTimeout(() => {
+      resolve();
+    }, msec);
+  })
 
-		{block:ShopPublic}
-		{block:IndexPageSearch}
-			<h3 class="mainHeaderNavColor titleForSearchResult">{lang:ItemSearchResult}</h3>
-		{/block:IndexPageSearch}
+  /**
+  * クラス名つけかえクラス
+  * @class
+  */
+  class ClassName {
 
-		{block:HasItems}
-		<section id="products">
-			<ul class="product_list_wrap row">
-				{block:Items}
-				<li class="product_list">
-					<a href="{ItemPageURL}">
-						{block:AppsItemLabel}
-						{AppsItemLabelTag}
-						{/block:AppsItemLabel}
-						<div class="item_meta {block:ItemNowOnSale}{block:NoItemStock}soldOut{/block:NoItemStock}{/block:ItemNowOnSale} {block:ItemEndOfSale}soldOut{/block:ItemEndOfSale}">
-							{block:HasItemStock}
-								{block:ItemWatingForSale}
-										<p class="comingSoon">COMING SOON</p>
-								{/block:ItemWatingForSale}
-								{block:ItemNowOnSale}{block:ItemPreOrder}
-										<p class="preOrder">{lang:PreOrderItem}</p>
-								{/block:ItemPreOrder}{block:ItemLottery}
-										<p class="lottery">{lang:LotteryItem}</p>
-								{/block:ItemLottery}{/block:ItemNowOnSale}
-								{block:ItemEndOfSale}
-										<p class="soldOutText">SOLD OUT</p>
-								{/block:ItemEndOfSale}
-							{/block:HasItemStock}
-							{block:NoItemStock}
-								{block:ItemWatingForSale}
-										<p class="comingSoon">COMING SOON</p>
-								{/block:ItemWatingForSale}
-								{block:ItemNowOnSale}
-										<p class="soldOutText">SOLD OUT</p>
-								{/block:ItemNowOnSale}
-								{block:ItemEndOfSale}
-										<p class="soldOutText">SOLD OUT</p>
-								{/block:ItemEndOfSale}
-							{/block:NoItemStock}
-							<h2 class="title">{ItemTitle}</h2>
-							{block:NoItemProperPrice}
-							<!-- 定価 -->
-							<div class="price ">{ItemPrice}</div>
-							{/block:NoItemProperPrice}
-							{block:HasItemProperPrice}
-							<!-- 割引 -->
-							<p class="discountPrice">
-								<span class="discountPrice__ratio">{ItemDiscountRate}</span>
-								<span class="discountPrice__calcPrice">{ItemPrice}</span>
-							</p>
-							{/block:HasItemProperPrice}
-							<div class="detail">
-								<p class="detailText">{lang:SeeDetails}</p>
-							</div>
-						</div>
-					</a>
-					<div class="image_container">
-						<img src="{block:ItemImage1}{ItemImage1URL-300}{/block:ItemImage1}{block:NoItemImage1}{ItemNoImageURL}{/block:NoItemImage1}" alt="{ItemTitle}" title="{ItemTitle}" class="image_resize">
-					</div>
-				</li>
-				{/block:Items}
-			</ul>
-		<div id="loading" style="display: none;width: 100%;"><img src="/img/loading.gif" style="padding: 20px 0;width: 220px;"></div>
-		</section>
-		{/block:HasItems}
-		{block:NoItems}
-		<section class="tmpBox">
-			<p>{lang:NoItemsMessage}</p>
-		</section>
-		{/block:NoItems}
-		{/block:ShopPublic}
+    /**
+    * コンストラクタ
+    * @constructor
+    * @param {object} options
+    * @param {HTMLElement} options.element - 対象Element
+    * @param {HTMLElement} [options.activeTriggerElement] - activeトリガー要素
+    * @param {HTMLElement} [options.inactiveTriggerElement] - inactiveトリガー要素
+    * @param {string} [options.activeTriggerEventName] - activeトリガーイベント名
+    * @param {string} [options.inactiveTriggerEventName] - inactiveトリガーイベント名
+    * @param {string} [options.activeClassName] - アクティブ中のスタイルクラス
+    * @param {string} [options.inactiveClassName]  - 非アクティブ中のスタイルクラス
+    * @param {string} [options.activeClassName] - アクティブ中のスタイルクラス
+    * @param {string} [options.inactiveClassName]  - 非アクティブ中のスタイルクラス
+    * @param {boolean} [options.initialState] - 初期ステート
+    * @param {boolean} [options.useAnimation] - アニメーションを利用するか
+    */
+    constructor({ 
+      element,
+      activeTriggerElement,
+      activeTriggerEventName,
+      inactiveTriggerElement = activeTriggerElement,
+      inactiveTriggerEventName = activeTriggerEventName,
+      activeClassName = 'is-active',
+      inactiveClassName = 'is-inactive',
+      initialState = false,
+      useAnimation = false
+    }) {
+      this.element = element;
+      this.classNames = {
+        active: activeClassName,
+        inactive: inactiveClassName,
+      };
+      this.states = {
+        isActive: initialState,
+        useAnimation,
+      }
 
-		{block:NotShopPublic}
-		<section class="tmpBox">
-			<p>{lang:NotShopPublicMessage}</p>
-		</section>
-		{/block:NotShopPublic}
+      if (activeTriggerElement && activeTriggerEventName) {;
+        if (activeTriggerElement === inactiveTriggerElement && activeTriggerEventName === inactiveTriggerEventName) {
+          activeTriggerElement.addEventListener(activeTriggerEventName, () => {
+            this.toggle();
+          });
+        } else {
+          activeTriggerElement.addEventListener(activeTriggerEventName, () => {
+            this.activate();
+          });
+          inactiveTriggerElement.addEventListener(inactiveTriggerEventName, () => {
+            this.inactivate();
+          });
 
-		<script type="text/javascript">
-			var process_flg = false;
-			var end_flg = false;
-			$(window).bottom({proximity: 0.05});
-			$(window).on('bottom', function() {
-				if (process_flg == false && end_flg == false) {
-					var max_page = $("#max_page").text();
-					var next_page = $('#next_page').text();
-					if (eval(max_page) >= eval(next_page)) {
-						$.ajax({
-							url: "{LoadItemsPageURL}" + next_page + "{LoadItemsPageURLParams}",
-							dataType: 'html',
-							beforeSend: function () {
-								process_flg = true;
-								$('#loading').css('display', 'block');
-							},
-							success: function (data) {
-								$('#products ul').append(data);
-								next_page = eval(next_page) + 1;
-								$('#next_page').text(next_page);
-							},
-							complete: function () {
-								process_flg = false;
-								$('#loading').css('display', 'none');
-							}
-						});
-					} else {
-						end_flg = true;
-					}
-				}
-			});
-		</script>
-		{/block:IndexPage}
+        }
+      }
+      this.render();
+    };
 
-		{block:ItemPage}
+    /**
+    * 状態をtoggleする
+    * @return {Promise<void>}
+    */
+    async toggle() {
+      if (this.states.isActive) {
+        await this.inactivate();
+      } else {
+        await this.activate();
+      }
+    }
 
-		<div class="wrapper">
-			<section class="content clearfix" itemscope="" itemtype="http://schema.org/Product">
-				{IllegalReportMessageTag}
-				<div class="kakaku">
-					<ul class="bxslider">
-						<li>
-							<div class="img_box">
-								{block:AppsItemLabel}
-								{AppsItemLabelTag}
-								{/block:AppsItemLabel}
-								<a href="{block:ItemImage1}{ItemImage1URL-origin}{/block:ItemImage1}{block:NoItemImage1}{ItemNoImageURL}{/block:NoItemImage1}" class="ajax btn grn save" rel="group">
-									<img src="{block:ItemImage1}{ItemImage1URL-500}{/block:ItemImage1}{block:NoItemImage1}{ItemNoImageURL}{/block:NoItemImage1}" alt="{ItemTitle}" title="" id="img_large" itemprop="image">
-								</a>
-							</div>
-						</li>
-						{block:ItemImage2}
-						<li style="display:none;">
-							<div class="img_box">
-								<a href="{ItemImage2URL-origin}" class="ajax btn grn save" rel="group">
-									<img src="{ItemImage2URL-500}" alt="" title="">
-								</a>
-							</div>
-						</li>
-						{/block:ItemImage2}
-						{block:ItemImage3}
-						<li style="display:none;">
-							<div class="img_box">
-								<a href="{ItemImage3URL-origin}" class="ajax btn grn save" rel="group">
-									<img src="{ItemImage3URL-500}" alt="" title="">
-								</a>
-							</div>
-						</li>
-						{/block:ItemImage3}
-						{block:ItemImage4}
-						<li style="display:none;">
-							<div class="img_box">
-								<a href="{ItemImage4URL-origin}" class="ajax btn grn save" rel="group">
-									<img src="{ItemImage4URL-500}" alt="" title="">
-								</a>
-							</div>
-						</li>
-						{/block:ItemImage4}
-						{block:ItemImage5}
-						<li style="display:none;">
-							<div class="img_box">
-								<a href="{ItemImage5URL-origin}" class="ajax btn grn save" rel="group">
-									<img src="{ItemImage5URL-500}" alt="" title="">
-								</a>
-							</div>
-						</li>
-						{/block:ItemImage5}
-						{block:ItemImage6}
-						<li style="display:none;">
-							<div class="img_box">
-								<a href="{ItemImage6URL-origin}" class="ajax btn grn save" rel="group">
-									<img src="{ItemImage6URL-500}" alt="" title="">
-								</a>
-							</div>
-						</li>
-						{/block:ItemImage6}
-						{block:ItemImage7}
-						<li style="display:none;">
-							<div class="img_box">
-								<a href="{ItemImage7URL-origin}" class="ajax btn grn save" rel="group">
-									<img src="{ItemImage7URL-500}" alt="" title="">
-								</a>
-							</div>
-						</li>
-						{/block:ItemImage7}
-						{block:ItemImage8}
-						<li style="display:none;">
-							<div class="img_box">
-								<a href="{ItemImage8URL-origin}" class="ajax btn grn save" rel="group">
-									<img src="{ItemImage8URL-500}" alt="" title="">
-								</a>
-							</div>
-						</li>
-						{/block:ItemImage8}
-						{block:ItemImage9}
-						<li style="display:none;">
-							<div class="img_box">
-								<a href="{ItemImage9URL-origin}" class="ajax btn grn save" rel="group">
-									<img src="{ItemImage9URL-500}" alt="" title="">
-								</a>
-							</div>
-						</li>
-						{/block:ItemImage9}
-						{block:ItemImage10}
-						<li style="display:none;">
-							<div class="img_box">
-								<a href="{ItemImage10URL-origin}" class="ajax btn grn save" rel="group">
-									<img src="{ItemImage10URL-500}" alt="" title="">
-								</a>
-							</div>
-						</li>
-						{/block:ItemImage10}
-						{block:ItemImage11}
-						<li style="display:none;">
-							<div class="img_box">
-								<a href="{ItemImage11URL-origin}" class="ajax btn grn save" rel="group">
-									<img src="{ItemImage11URL-500}" alt="" title="">
-								</a>
-							</div>
-						</li>
-						{/block:ItemImage11}
-						{block:ItemImage12}
-						<li style="display:none;">
-							<div class="img_box">
-								<a href="{ItemImage12URL-origin}" class="ajax btn grn save" rel="group">
-									<img src="{ItemImage12URL-500}" alt="" title="">
-								</a>
-							</div>
-						</li>
-						{/block:ItemImage12}
-						{block:ItemImage13}
-						<li style="display:none;">
-							<div class="img_box">
-								<a href="{ItemImage13URL-origin}" class="ajax btn grn save" rel="group">
-									<img src="{ItemImage13URL-500}" alt="" title="">
-								</a>
-							</div>
-						</li>
-						{/block:ItemImage13}
-						{block:ItemImage14}
-						<li style="display:none;">
-							<div class="img_box">
-								<a href="{ItemImage14URL-origin}" class="ajax btn grn save" rel="group">
-									<img src="{ItemImage14URL-500}" alt="" title="">
-								</a>
-							</div>
-						</li>
-						{/block:ItemImage14}
-						{block:ItemImage15}
-						<li style="display:none;">
-							<div class="img_box">
-								<a href="{ItemImage15URL-origin}" class="ajax btn grn save" rel="group">
-									<img src="{ItemImage15URL-500}" alt="" title="">
-								</a>
-							</div>
-						</li>
-						{/block:ItemImage15}
-						{block:ItemImage16}
-						<li style="display:none;">
-							<div class="img_box">
-								<a href="{ItemImage16URL-origin}" class="ajax btn grn save" rel="group">
-									<img src="{ItemImage16URL-500}" alt="" title="">
-								</a>
-							</div>
-						</li>
-						{/block:ItemImage16}
-						{block:ItemImage17}
-						<li style="display:none;">
-							<div class="img_box">
-								<a href="{ItemImage17URL-origin}" class="ajax btn grn save" rel="group">
-									<img src="{ItemImage17URL-500}" alt="" title="">
-								</a>
-							</div>
-						</li>
-						{/block:ItemImage17}
-						{block:ItemImage18}
-						<li style="display:none;">
-							<div class="img_box">
-								<a href="{ItemImage18URL-origin}" class="ajax btn grn save" rel="group">
-									<img src="{ItemImage18URL-500}" alt="" title="">
-								</a>
-							</div>
-						</li>
-						{/block:ItemImage18}
-						{block:ItemImage19}
-						<li style="display:none;">
-							<div class="img_box">
-								<a href="{ItemImage19URL-origin}" class="ajax btn grn save" rel="group">
-									<img src="{ItemImage19URL-500}" alt="" title="">
-								</a>
-							</div>
-						</li>
-						{/block:ItemImage19}
-						{block:ItemImage20}
-						<li style="display:none;">
-							<div class="img_box">
-								<a href="{ItemImage20URL-origin}" class="ajax btn grn save" rel="group">
-									<img src="{ItemImage20URL-500}" alt="" title="">
-								</a>
-							</div>
-						</li>
-						{/block:ItemImage20}
-					</ul>
-					<div id="bx-pager">
-						<a data-slide-index="{Counter}" href="">
-							<div class="small_img_box">
-								<img src="{block:ItemImage1}{ItemImage1URL-76}{/block:ItemImage1}{block:NoItemImage1}{ItemNoImageURL}{/block:NoItemImage1}" alt="{ItemTitle}" title="" id="img_large">
-							</div>
-						</a>
-						{block:ItemImage2}
-						<a data-slide-index="{Counter}" href="">
-							<div class="small_img_box">
-								<img src="{ItemImage2URL-76}" alt="" title="">
-							</div>
-						</a>
-						{/block:ItemImage2}
-						{block:ItemImage3}
-						<a data-slide-index="{Counter}" href="">
-							<div class="small_img_box">
-								<img src="{ItemImage3URL-76}" alt="" title="">
-							</div>
-						</a>
-						{/block:ItemImage3}
-						{block:ItemImage4}
-						<a data-slide-index="{Counter}" href="">
-							<div class="small_img_box">
-								<img src="{ItemImage4URL-76}" alt="" title="">
-							</div>
-						</a>
-						{/block:ItemImage4}
-						{block:ItemImage5}
-						<a data-slide-index="{Counter}" href="">
-							<div class="small_img_box">
-								<img src="{ItemImage5URL-76}" alt="" title="">
-							</div>
-						</a>
-						{/block:ItemImage5}
-						{block:ItemImage6}
-						<a data-slide-index="{Counter}" href="">
-							<div class="small_img_box">
-								<img src="{ItemImage6URL-76}" alt="" title="">
-							</div>
-						</a>
-						{/block:ItemImage6}
-						{block:ItemImage7}
-						<a data-slide-index="{Counter}" href="">
-							<div class="small_img_box">
-								<img src="{ItemImage7URL-76}" alt="" title="">
-							</div>
-						</a>
-						{/block:ItemImage7}
-						{block:ItemImage8}
-						<a data-slide-index="{Counter}" href="">
-							<div class="small_img_box">
-								<img src="{ItemImage8URL-76}" alt="" title="">
-							</div>
-						</a>
-						{/block:ItemImage8}
-						{block:ItemImage9}
-						<a data-slide-index="{Counter}" href="">
-							<div class="small_img_box">
-								<img src="{ItemImage9URL-76}" alt="" title="">
-							</div>
-						</a>
-						{/block:ItemImage9}
-						{block:ItemImage10}
-						<a data-slide-index="{Counter}" href="">
-							<div class="small_img_box">
-								<img src="{ItemImage10URL-76}" alt="" title="">
-							</div>
-						</a>
-						{/block:ItemImage10}
-						{block:ItemImage11}
-						<a data-slide-index="{Counter}" href="">
-							<div class="small_img_box">
-								<img src="{ItemImage11URL-76}" alt="" title="">
-							</div>
-						</a>
-						{/block:ItemImage11}
-						{block:ItemImage12}
-						<a data-slide-index="{Counter}" href="">
-							<div class="small_img_box">
-								<img src="{ItemImage12URL-76}" alt="" title="">
-							</div>
-						</a>
-						{/block:ItemImage12}
-						{block:ItemImage13}
-						<a data-slide-index="{Counter}" href="">
-							<div class="small_img_box">
-								<img src="{ItemImage13URL-76}" alt="" title="">
-							</div>
-						</a>
-						{/block:ItemImage13}
-						{block:ItemImage14}
-						<a data-slide-index="{Counter}" href="">
-							<div class="small_img_box">
-								<img src="{ItemImage14URL-76}" alt="" title="">
-							</div>
-						</a>
-						{/block:ItemImage14}
-						{block:ItemImage15}
-						<a data-slide-index="{Counter}" href="">
-							<div class="small_img_box">
-								<img src="{ItemImage15URL-76}" alt="" title="">
-							</div>
-						</a>
-						{/block:ItemImage15}
-						{block:ItemImage16}
-						<a data-slide-index="{Counter}" href="">
-							<div class="small_img_box">
-								<img src="{ItemImage16URL-76}" alt="" title="">
-							</div>
-						</a>
-						{/block:ItemImage16}
-						{block:ItemImage17}
-						<a data-slide-index="{Counter}" href="">
-							<div class="small_img_box">
-								<img src="{ItemImage17URL-76}" alt="" title="">
-							</div>
-						</a>
-						{/block:ItemImage17}
-						{block:ItemImage18}
-						<a data-slide-index="{Counter}" href="">
-							<div class="small_img_box">
-								<img src="{ItemImage18URL-76}" alt="" title="">
-							</div>
-						</a>
-						{/block:ItemImage18}
-						{block:ItemImage19}
-						<a data-slide-index="{Counter}" href="">
-							<div class="small_img_box">
-								<img src="{ItemImage19URL-76}" alt="" title="">
-							</div>
-						</a>
-						{/block:ItemImage19}
-						{block:ItemImage20}
-						<a data-slide-index="{Counter}" href="">
-							<div class="small_img_box">
-								<img src="{ItemImage20URL-76}" alt="" title="">
-							</div>
-						</a>
-						{/block:ItemImage20}
-					</div>
-				</div>
+    /**
+    * アクティブ化する
+    * @return {Promise<void>}
+    */
+    async activate() {
+      if (this.states.useAnimation) {
+        const animation = new Animation({
+          element: this.element,
+          animationClassName: 'is-animationToActive',
+          useAnimationEndClassName: false,
+        });
+        await animation.exec();
+      }
+      this.states.isActive = true;
+      this.render();
+    }
 
-				<section class="row">
-					<div class="descri">
-						<div class="product">
-							<div class="product_top">
-								<h2 itemprop="name">{ItemTitle}{block:AppsDownload}{block:ItemDigitalContent}({ItemDigitalContent}){/block:ItemDigitalContent}{/block:AppsDownload}</h2>
-							</div>
-							<div class="itemAttention clearfix" itemprop="offers" itemscope="" itemtype="http://schema.org/offer">
+    /**
+    * 非アクティブ化する
+    * @return {Promise<void>}
+    */
+    async inactivate() {
+      if (this.states.useAnimation) {
+        const animation = new Animation({
+          element: this.element,
+          animationClassName: 'is-animationToInactive',
+          useAnimationEndClassName: false,
+        });
+        await animation.exec();
+      }
+      this.states.isActive = false;
+      this.render();
+    }
 
-								<div class="{block:ItemNowOnSale}{block:NoItemStock}soldOut{/block:NoItemStock}{/block:ItemNowOnSale} {block:ItemEndOfSale}soldOut{/block:ItemEndOfSale}">
-									{block:NoItemProperPrice}
-										<!-- 定価 -->
-										<span class="price_del"><span class="price">{ItemPrice}</span></span>
-										{block:ItemEndOfSale}<span class="price_soldout">SOLD OUT</span>{/block:ItemEndOfSale}
-										{block:ItemNowOnSale}{block:NoItemStock}<span class="price_soldout">SOLD OUT</span>{/block:NoItemStock}{/block:ItemNowOnSale}
-									{/block:NoItemProperPrice}
-									{block:HasItemProperPrice}
-										<!-- 割引 -->
-										<p class="discountPrice">
-											<span class="discountPrice__default">{ItemProperPrice}</span><span class="discountPrice__ratio">{ItemDiscountRate}</span><br>
-											<span class="price_del"><span class="discountPrice__calcPrice">{ItemPrice}</span></span>
-											{block:ItemEndOfSale}<span class="price_soldout">SOLD OUT</span>{/block:ItemEndOfSale}
-											{block:ItemNowOnSale}{block:NoItemStock}<span class="price_soldout">SOLD OUT</span>{/block:NoItemStock}{/block:ItemNowOnSale}
-										</p>
-									{/block:HasItemProperPrice}
-								</div>
+    /**
+    * stateをもとに描画する
+    */
+    render() {
+      if (this.states.isActive) {
+        this.element.classList.add(this.classNames.active);
+        this.element.classList.remove(this.classNames.inactive);
+      } else {
+        this.element.classList.remove(this.classNames.active);
+        this.element.classList.add(this.classNames.inactive);
+      }
+    }
+  }
 
-								{block:ItemWatingForSale}
-									<p class="comingSoon">COMING SOON</p>
-								{/block:ItemWatingForSale}
-							</div>
+  /**
+  * パララックス
+  * @class
+  */
+  class Parallax {
+    /**
+    * コンストラクタ
+    * @constructor
+    * @param {object} options
+    * @param {HTMLElement} options.element - 対象Element
+    * @param {HTMLElement} [options.rootElement] - 基準Element
+    * @param {number} [options.coefficient] - 係数
+    * @param {'normal'|'reverse'} [options.direction] - 方向
+    */
+    constructor({element, rootElement = document.body, coefficient = 0.1, direction = 'normal'}) {
+      this.rootElement = rootElement;
+      this.element = element;
+      this.coefficient = coefficient;
+      this.direction = direction === 'reverse' ? -1 : 1;
 
-							{ItemAttentionTag}
+      const { top, height } = rootElement.getBoundingClientRect();
+      this.referencePositionY = (window.scrollY || window.pageYOffset) + top + (height / 2);
+      document.addEventListener('scroll', this.update.bind(this));
+    }
 
-						</div>
-						<div style="clear:both;"></div>
-					</div>
+    /**
+    * 描画をupdateする
+    */
+    update() {
+      const { element, rootElement, coefficient, direction, referencePositionY } = this;
+      const windowPositionY = (window.scrollY || window.pageYOffset) + (window.innerHeight / 2);
+      const distance = referencePositionY - windowPositionY;
+      element.style.transform = `translateY(${coefficient * direction * distance}px)`;
+    }
+  }
 
-					{block:PurchaseForm}
-						{ItemSelectTag}
-						{PurchaseButton}
-					{/block:PurchaseForm}
+  /**
+  * アニメーション
+  * @class
+  */
+  class Animation {
 
-					<div class="shareButtons">
-						{SocialButtonTag}
-						<div class="twitter">
-							<a href="http://twitter.com/share" class="twitter-share-button" data-url="{ItemRedirectUrl}" data-lang="ja" data-hashtags="{TwitterDataHashtags}" data-via="{TwitterDataVia}">{lang:Tweet}</a>
-						</div>
-						<div class="facebook">
-							<div class="fb-share-button" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u&amp;src=sdkpreparse">シェア</a></div>
-						</div>
-						{EmbedWidgetTag}
-					</div>
-					<div id="reportBtn">
-						{IllegalReportTag}
-					</div>
-					<p class="explanation" style="word-wrap: break-word;line-height: 1.5em;" itemprop="description">{ItemDetail}</p>
-					{block:AppsItemDetailCustom}
-						{AdditionalItemDetail}
-						{AdditionalItemDetailDefaultCssAndJs}
-					{/block:AppsItemDetailCustom}
-					<div class="clearfix"></div>
-				</section>
-			</section>
+    /**
+    * コンストラクタ
+    * @constructor
+    * @param {object} options
+    * @param {HTMLElement} options.element - 対象Element
+    * @param {string} [options.animationClassName] - アニメーション中のスタイルクラス
+    * @param {string} [options.animationEndClassName]  - アニメーション後のスタイルクラス
+    * @param {boolean} [options.useAnimationEndClassName] - アニメーション後に痕跡を残さないか
+    */
+    constructor({ 
+      element,
+      animationClassName = 'is-animating',
+      animationEndClassName = 'is-animationend',
+      useAnimationEndClassName = true,
+    }) {
+      this.element = element;
+      this.animationClassName = animationClassName;
+      this.animationEndClassName = animationEndClassName;
+      this.useAnimationEndClassName = useAnimationEndClassName;
+    }
 
-			{block:AppsReview}
-			{AppsReviewTag}
-			{/block:AppsReview}
-		</div>
+    /**
+    * アニメーションを実行する
+    * @return {Promise<void>}
+    */
+    exec() {
+      return new Promise((resolve) => {
+        const handler = (e) => {
+          this.element.removeEventListener('transitionend', handler);
+          this.element.removeEventListener('animationend', handler);
+          this.element.classList.remove(this.animationClassName);
+          if (this.useAnimationEndClassName) this.element.classList.add(this.animationEndClassName)
+          resolve();
+        }
+        this.element.addEventListener('transitionend', handler, {
+          once: true,
+        });
+        this.element.addEventListener('animationend', handler, {
+          once: true,
+        })
+        this.element.classList.add(this.animationClassName);
+      });
+    }
 
-		<script src="{BASEURL}/js/jquery.colorbox-min.js"></script>
-		<script src="{BASEURL}/js/jquery.bxslider.min.js"></script>
-		<script type="text/javascript">
-			$(document).ready(function() {
-				$('.bxslider').bxSlider({
-					controls: false,
-					pagerCustom: '#bx-pager',
-					adaptiveHeight: true,
-					mode: 'fade'
-				});
-				$(".ajax").colorbox({className:'itemCb',maxWidth:'1000px',fastIframe:false,current:false});
-			});
-		</script>
-		{/block:ItemPage}
+    /**
+    * 初期状態に戻す
+    */
+    reset() {
+      this.element.classList.remove(this.animationClassName);
+      this.element.classList.remove(this.animationEndClassName)
+    }
+  }
 
-		{block:AboutPage}
-		<div class="main">
-			<div id="about">
-				<h2>about</h2>
-				<p>{ShopIntroduction}</p>
-				<div class="social">
-					<ul class="clearfix">
-						{block:ShopAmebaId}
-						<li><a href="http://ameblo.jp/{ShopAmebaId}" target="_blank"><img src="/img/shop/ambicon.png" height="30" width="30"></a></li>
-						{/block:ShopAmebaId}
-						{block:ShopFacebookId}
-						<li><a href="https://www.facebook.com/{ShopFacebookId}" target="_blank"><img src="/img/shop/fbicon.png" height="30" width="30"></a></li>
-						{/block:ShopFacebookId}
-						{block:ShopTwitterId}
-						<li class="tw"><a href="https://twitter.com/{ShopTwitterId}" target="_blank"><img src="/img/shop/twicon.png" height="30" width="30"></a></li>
-						{/block:ShopTwitterId}
-						{block:ShopLineId}
-						<li><a href="https://line.me/R/ti/p/%40{ShopLineId}" target="_blank"><img src="/img/shop/lineicon.png" height="30" width="30"></a></li>
-						{/block:ShopLineId}
-						{block:ShopInstagramId}
-						<li><a href="http://instagram.com/{ShopInstagramId}" target="_blank"><img src="/img/shop/igicon.png" height="30" width="30"></a></li>
-						{/block:ShopInstagramId}
-					</ul>
-				</div>
-			</div>
-		</div>
-		{/block:AboutPage}
 
-		{block:ContactPage}
-		{ContactContentsTag}
-		{/block:ContactPage}
 
-		{block:PrivacyPage}
-		{PrivacyContentsTag}
-		{/block:PrivacyPage}
+  /**
+  * フォトセレクタ
+  * @class
+  */
+  class PhotoSelector {
 
-		{block:LawPage}
-		{LawContentsTag}
-		{/block:LawPage}
+    /**
+    * コンストラクタ
+    * @constructor
+    * @param {object} options
+    * @param {HTMLElement} options.displayElementForeground - ディスプレイ前面要素
+    * @param {HTMLElement} options.displayElementBackground - ディスプレイ背面要素
+    * @param {HTMLElement[]} options.selectorElements - ディスプレイ背面要素
+    */
+    constructor({
+      displayElementForeground,
+      displayElementBackground,
+      selectorElements,
+    }) {
+      this.elements = {
+        display: {
+          foreground: displayElementForeground,
+          background: displayElementBackground,
+        },
+        selectors: selectorElements,
+      };
+      this.images = this.elements.selectors.map(selectorElement => selectorElement.dataset.src);
+      this.states = {
+        current: 0,
+        before: 0,
+        isAnimation: false,
+      }
 
-		{block:BlogPage}
-		{BlogContentsTag}
-		{/block:BlogPage}
-	</div>
+      this.elements.selectors.forEach((selectorElement, index) => {
+        selectorElement.addEventListener('click', () => {
+          this.changeImage(index);
+        })
+      })
 
-	<footer id="mainFooter">
-		<ul class="clearfix">
-			<li><a class="footerNav" href="{PrivacyPageURL}">{lang:Privacy}</a></li>
-			<li><a class="footerNav" href="{LawPageURL}">{lang:Law}</a></li>
-			<li class="boxRight">
-				<div class="socialBtnList clearfix">
-					<div class="fb sns">
-						<div class="fb-share-button" data-href="{ShopURL}/" data-layout="button_count" data-size="small" data-mobile-iframe="true"><a class="fb-xfbml-parse-ignore" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdevelopers.facebook.com%2Fdocs%2Fplugins%2F&amp;src=sdkpreparse">シェア</a></div>
-					</div>
-					<div class="tw sns">
-						<a href="http://twitter.com/share" class="twitter-share-button" data-url="{ShopRedirectUrl}" data-lang="ja" data-hashtags="{TwitterDataHashtags}" data-via="{TwitterDataVia}" data-text="{ShopName}">{lang:Tweet}</a>
-					</div>
-				</div>
-			</li>
-		</ul>
-	</footer>
+      this.render();
+    }
 
-	<input id="base_url" type="hidden" value="{ShopURL}">
+    /**
+    * 画像を差し替える
+    * @param {number} target - ターゲットインデックス
+    * @return {Promise<void>}
+    */
+    async changeImage(target) {
+      if (this.states.isAnimation) return;
+      this.states.current = target;
+      await this.render();
+    }
+
+    /**
+    * stateをもとに描画する
+    * @return {Promise<void>}
+    */
+    async render() {
+      const { current, before } = this.states;
+      const { foreground: foregroundDisplay, background: backgroundDisplay } = this.elements.display;
+      const targetImageUrl = this.images[current];
+      const currentClassName = 'is-current';
+
+      if (this.states.isAnimation) return;
+
+      this.elements.selectors.forEach(selector => {
+        selector.classList.remove(currentClassName);
+      });
+      this.elements.selectors[current].classList.add(currentClassName);
+
+      if (current === before) return;
+  
+      const animation = new Animation({
+        element: foregroundDisplay,
+        animationClassName: 'is-fade',
+        animationEndClassName: 'is-fadeEnd',
+      })
+      
+      this.states.isAnimation = true;
+
+      backgroundDisplay.style.backgroundImage = `url(${targetImageUrl})`;
+      await sleep(100);
+      await animation.exec();
+      foregroundDisplay.style.backgroundImage = `url(${targetImageUrl})`;
+      // すぐに描画リセットするとbackgroundImage設定が追いつかずチラつくので待つ
+      await sleep(100);
+      animation.reset();
+
+      this.states.before = current;
+
+      this.states.isAnimation = false;
+    }
+  }
+
+  const cutoffText = () => {
+    const delimiter = /\n/;
+    /** @type {HTMLElement[]} */
+    const headings = Array.from(document.querySelectorAll('.js-CuttoffTarget--heading'));
+    headings.forEach(headingElement => {
+      const headingText = headingElement.innerText.split(delimiter)[0];
+      headingElement.innerText = headingText;
+    });
+
+    const mainTexts = /** @type {HTMLElement[]} */ (Array.from(document.querySelectorAll('.js-CuttoffTarget--mainText')));
+    mainTexts.forEach(headingElement => {
+      const mainText = headingElement.innerText.split(delimiter).slice(2);
+      headingElement.innerHTML = mainText.join('<br>');
+    });
+  };
+
+  const setupPhotoSelector = () => {
+    const currentClassName = 'is-current';
+    /**
+    * @type {HTMLElement|null}
+    */
+    const displayElementBackground = document.querySelector('.js-PhotoSelector__displayItem--background');
+    /**
+    * @type {HTMLElement|null}
+    */
+    const displayElementForeground = document.querySelector('.js-PhotoSelector__displayItem--foreground');
+    /**
+    * @type {HTMLElement[]|null}
+    */
+    const selectorElements = Array.from(document.querySelectorAll('.js-PhotoSelector__selectorItem'));
+
+    if (!displayElementBackground || !displayElementForeground) return;
+    new PhotoSelector({
+      displayElementBackground,
+      displayElementForeground,
+      selectorElements,
+    })
+  };
+
+  const setupLoading = () => {
+    /**
+    * @type {HTMLElement|null}
+    */
+    const loadingElement = document.querySelector('.js-Loading');
+    const bodyElement = document.body;
+    const CLASS_NAME_CLAMPED = 'is-clamped';
+    const animation = new Animation({
+      element: loadingElement,
+      animationClassName: 'is-fade',
+      animationEndClassName: 'is-fadeEnd',
+    });
+    
+    bodyElement.classList.add(CLASS_NAME_CLAMPED);
+    window.addEventListener('load', async () => {
+      await animation.exec();
+      bodyElement.classList.remove(CLASS_NAME_CLAMPED);
+    })
+  };
+
+  const setupMenu = () => {
+    new ClassName({
+      element: document.querySelector('.js-OverlayMenu'),
+      activeTriggerElement: document.querySelector('.js-OverlayMenu__hamburger'),
+      activeTriggerEventName: 'click',
+      activeClassName: 'is-open',
+      initialState: false,
+    })
+  };
+
+  const setupParallax = () => {
+    /**
+    * @type {HTMLElement|null}
+    */
+    const element =  document.querySelector('.js-parallax');
+    /**
+    * @type {HTMLElement | null}
+    */
+    const rootElement = document.querySelector('.js-parallaxRoot');
+
+    if (!element || !rootElement) return;
+  
+    new Parallax({
+      element,
+      rootElement,
+    })
+  };
+
+  const setupPurchaseButtonBeacon = () => {
+    /**
+    * @param {HTMLElement} element - 対象エレメント
+    * @param {string} category - Google Analiticsカテゴリ名
+    * @param {string} action - Google Analiticsアクション名
+    * @param {string} [label] - Google Analiticsアクション名
+    */
+    const setEvent = (element, category, action, label = '') => {
+      element.addEventListener('click', () => {
+        ga.send('send', 'event', category, action, label);
+      });
+    }
+    // カート（予約商品込）
+    const addToCartButton = document.querySelector('.purchaseButton__btn--addToCart');
+    if (addToCartButton) setEvent(addToCartButton, 'purchase', 'addToCart', '{ItemTitle}');
+    // 再入荷問い合わせ
+    const noItemButton = document.querySelector('.purchaseButton__btn--noItem');
+    if (noItemButton ) setEvent(noItemButton , 'purchase', 'contactForNoItem', '{ItemTitle}');
+    // 販売待ち
+    const comingSoonButton = document.querySelector('.purchaseButton__btn--comingSoon');
+    if (noItemButton ) setEvent(noItemButton , 'purchase', 'requestNoticeForSale', '{ItemTitle}');
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    setupLoading();
+    cutoffText();
+    setupPhotoSelector();
+    setupMenu();
+    setupParallax();
+    setupPurchaseButtonBeacon();
+  });
+})()
+</script>
 </body>
 </html>
 {/block:NotLoadItemsPage}
+
 {block:LoadItemsPage}
-{block:Items}
-<li class="product_list">
-	<a href="{ItemPageURL}">
-		{block:AppsItemLabel}
-		{AppsItemLabelTag}
-		{/block:AppsItemLabel}
-		<div class="item_meta {block:ItemNowOnSale}{block:NoItemStock}soldOut{/block:NoItemStock}{/block:ItemNowOnSale} {block:ItemEndOfSale}soldOut{/block:ItemEndOfSale}">
-			{block:HasItemStock}
-				{block:ItemWatingForSale}
-						<p class="comingSoon">COMING SOON</p>
-				{/block:ItemWatingForSale}
-				{block:ItemNowOnSale}{block:ItemPreOrder}
-						<p class="preOrder">{lang:PreOrderItem}</p>
-				{/block:ItemPreOrder}{block:ItemLottery}
-						<p class="lottery">{lang:LotteryItem}</p>
-				{/block:ItemLottery}{/block:ItemNowOnSale}
-				{block:ItemEndOfSale}
-						<p class="soldOutText">SOLD OUT</p>
-				{/block:ItemEndOfSale}
-			{/block:HasItemStock}
-			{block:NoItemStock}
-				{block:ItemWatingForSale}
-						<p class="comingSoon">COMING SOON</p>
-				{/block:ItemWatingForSale}
-				{block:ItemNowOnSale}
-						<p class="soldOutText">SOLD OUT</p>
-				{/block:ItemNowOnSale}
-				{block:ItemEndOfSale}
-						<p class="soldOutText">SOLD OUT</p>
-				{/block:ItemEndOfSale}
-			{/block:NoItemStock}
-			<h2 class="title">{ItemTitle}</h2>
-			{block:NoItemProperPrice}
-			<!-- 定価 -->
-			<div class="price ">{ItemPrice}</div>
-			{/block:NoItemProperPrice}
-			{block:HasItemProperPrice}
-			<!-- 割引 -->
-			<p class="discountPrice">
-				<span class="discountPrice__ratio">{ItemDiscountRate}</span>
-				<span class="discountPrice__calcPrice">{ItemPrice}</span>
-			</p>
-			{/block:HasItemProperPrice}
-			<div class="detail">
-				<p class="detailText">{lang:SeeDetails}</p>
-			</div>
-		</div>
-	</a>
-	<div class="image_container">
-		<img src="{block:ItemImage1}{ItemImage1URL-300}{/block:ItemImage1}{block:NoItemImage1}{ItemNoImageURL}{/block:NoItemImage1}" alt="{ItemTitle}" title="{ItemTitle}" class="image_resize">
-	</div>
-</li>
-{/block:Items}
+  商品一覧でajaxで読み込む内容をここに記述
 {/block:LoadItemsPage}
