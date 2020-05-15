@@ -1,17 +1,88 @@
 {block:NotLoadItemsPage}
 <html>
-<head>
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+  <!-- 01. common meta infos -->
   <title>{PageTitle}</title>
+  <meta name="keywords" content="銭湯,小杉湯,銭湯ぐらし,通販" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="{PageTitle}" />
+  <meta property="og:site_name" content="銭湯のあるくらし便" />
+  <meta property="fb:app_id" content="306929856428469" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@sentogurashi" />
+  <meta name="twitter:title" content="{PageTitle}" />
+
+  <!-- 02. ogp images -->
+  {block:NotItemPage}
+    <meta property="og:image" content="https://sentogurashi.com/ec/ogp.jpg" />
+    <meta name="twitter:image" content="https://sentogurashi.com/ec/ogp.jpg" />
+  {/block:NotItemPage}
+  {block:ItemPage}
+    <meta property="og:image" content="{ItemImage1URL-origin}" />
+    <meta name="twitter:image" content="{ItemImage1URL-origin}" />
+  {/block:ItemPage}
+
+  <!-- 03. description and url -->
+  <!-- 03-1. index page -->
+  {block:IndexPage}
+    <meta name="description" content="いつもの毎日がちょっと特別になる。「ケの日のハレ」を届けます。" />
+    <meta property="og:description" content="いつもの毎日がちょっと特別になる。「ケの日のハレ」を届けます。" />
+    <meta name="twitter:description" content="いつもの毎日がちょっと特別になる。「ケの日のハレ」を届けます。" />
+    <meta property="og:url" content="{IndexPageURL}" />
+  <meta name="twitter:url" content="{IndexPageURL}" />
+  {/block:IndexPage}
+
+  <!-- 03-2. item page -->
+  {block:ItemPage}
+    <meta name="description" content="{ItemDetail}" />
+    <meta property="og:description" content="{ItemDetail}" />
+    <meta name="twitter:description" content="{ItemDetail}" />
+    <meta property="og:url" content="{ItemPageURL}" />
+    <meta name="twitter:url" content="{ItemPageURL}" />
+  {/block:ItemPage}
+
+  <!-- 03-3. about page -->
+  {block:AboutPage}
+    <meta name="description" content="はじめまして、銭湯ぐらしです。昭和8年から高円寺で愛されてきた銭湯・小杉湯で出会った私たちは、「小杉湯となり」という複合施設を運営しています。この場所は、銭湯がまちに開かれたお風呂であるように、それぞれのくらしを持ち寄れる、“まちに開かれたもうひとつの家”のような場所を目指しています。" />
+    <meta property="og:description" content="はじめまして、銭湯ぐらしです。昭和8年から高円寺で愛されてきた銭湯・小杉湯で出会った私たちは、「小杉湯となり」という複合施設を運営しています。この場所は、銭湯がまちに開かれたお風呂であるように、それぞれのくらしを持ち寄れる、“まちに開かれたもうひとつの家”のような場所を目指しています。" />
+    <meta name="twitter:description" content="はじめまして、銭湯ぐらしです。昭和8年から高円寺で愛されてきた銭湯・小杉湯で出会った私たちは、「小杉湯となり」という複合施設を運営しています。この場所は、銭湯がまちに開かれたお風呂であるように、それぞれのくらしを持ち寄れる、“まちに開かれたもうひとつの家”のような場所を目指しています。" />
+    <meta property="og:url" content="{AboutPageURL}" />
+    <meta name="twitter:url" content="{AboutPageURL}" />
+  {/block:AboutPage}
+
+  <!-- 03-4.contact page -->
+  {block:ContactPage}
+    <meta name="description" content="「銭湯のあるくらし便」お問い合わせはこちらから。" />
+    <meta property="og:description" content="「銭湯のあるくらし便」お問い合わせはこちらから。" />
+    <meta name="twitter:description" content="「銭湯のあるくらし便」お問い合わせはこちらから。" />
+    <meta property="og:url" content="{ContactPageURL}" />
+    <meta name="twitter:url" content="{ContactPageURL}" />
+  {/block:ContactPage}
+
+  <!-- 03-5. privacy page -->
+  {block:PrivacyPage}
+    <meta name="description" content="「銭湯のあるくらし便」プライバシーポリシーです。" />
+    <meta property="og:description" content="「銭湯のあるくらし便」プライバシーポリシーです。" />
+    <meta name="twitter:description" content="「銭湯のあるくらし便」プライバシーポリシーです。" />
+    <meta property="og:url" content="{PrivacyPageURL}" />
+    <meta name="twitter:url" content="{PrivacyPageURL}" />
+  {/block:PrivacyPage}
+
+  <!-- 03-6. law page -->
+  {block:LawPage}
+    <meta name="description" content="「銭湯のあるくらし便」特定商取引法に基づく表記です。" />
+    <meta property="og:description" content="「銭湯のあるくらし便」特定商取引法に基づく表記です。" />
+    <meta name="twitter:description" content="「銭湯のあるくらし便」特定商取引法に基づく表記です。" />
+    <meta property="og:url" content="{LawPageURL}" />
+    <meta name="twitter:url" content="{LawPageURL}" />
+  {/block:LawPage}
+
+  {CanonicalTag}
   {GoogleAnalyticsTag}
   {FaviconTag}
   {JQuery3Tag}
   {BackgroundTag}
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-5ZMDP35');</script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&family=Sawarabi+Gothic&display=swap">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
@@ -1411,8 +1482,6 @@
 </head>
 
 <body>
-  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5ZMDP35"
-  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <div class="OverlayMenu js-OverlayMenu">
     <div class="OverlayMenu__content">
       <nav class="OverlayMenu__nav">
@@ -1660,10 +1729,10 @@
 日々のすてきな余白があなたのおうちにも届きますように。
 </p>
             </div>
-            <a class="ExternalLinkBox Module__item" href="https://note.com/sentogurashi/n/n56a3ff21db36" target="_blank">
+            <!--<a class="ExternalLinkBox Module__item" href="https://note.com/sentogurashi/n/n56a3ff21db36" target="_blank">
               <p class="ExternalLinkBox__text">ここに書ききれない想いをnoteにて公開しております。ご一読いただけましたら幸いです。</p>
               <div class="ExternalLinkBox__button Button Button--dark">noteで続きを読む</div>
-            </a>
+            </a>-->
           </div>
           <!-- / .Module -->
       
