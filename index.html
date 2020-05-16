@@ -120,6 +120,7 @@
       --color-abstract-white: #fff;
       --color-abstract-green: #44b541;
       --color-abstract-red: #ed143d;
+      --color-semantic-alert: var(----color-abstract-red);
       --color-text-main: var(--color-abstract-black);
       --color-text-sub: var(--color-abstract-dark-gray);
       --color-text-withDarkBackground: var(--color-abstract-white);
@@ -1258,6 +1259,27 @@
       color: var(--color-text-sub);
     }
 
+    .ProductDetail__mainText a {
+      opacity: 1;
+      transition: var(--transition-hover);
+    }
+
+    .ProductDetail__mainText .caution {
+      color: var(--color-semantic-alert);
+    }
+
+    .ProductDetail__mainText a:link,
+    .ProductDetail__mainText a:visited {
+      color: var(--text-color-main);
+    }
+
+    @media screen and (min-width: 701px) {
+      .ProductDetail__mainText a:hover {
+        opacity: var(--opacity-hover);
+      }
+    }
+  
+
     .ProductDetail__mainHeading + .ProductDetail__mainText {
       margin-top: var(--spacing-XXXXLarge);
     }
@@ -1725,8 +1747,7 @@
               <p class="NormalArticle__text">この場所は、銭湯がまちに開かれたお風呂であるように、それぞれのくらしを持ち寄れる、“まちに開かれたもうひとつの家”のような場所を目指しています。</p>
               <p class="NormalArticle__text">大きなお風呂に入ったあとに、最高の一杯を飲んだり、季節を感じるものに出会ったり。<br>私たちが「小杉湯となり」を通して体験してほしかった時間を、この場所に来られない方にも届けたい。</p>
               <p class="NormalArticle__text">そんな想いから、私たちが銭湯のあるくらしの中で『心地いい！』と感じたものだけをセレクトしてお届けする、「銭湯のあるくらし便」が生まれました。</p>
-              <p class="NormalArticle__text">銭湯のとなりにくらしているような、
-日々のすてきな余白があなたのおうちにも届きますように。
+              <p class="NormalArticle__text">銭湯のとなりにくらしているような、日々のすてきな余白があなたのおうちにも届きますように。
 </p>
             </div>
             <!--<a class="ExternalLinkBox Module__item" href="https://note.com/sentogurashi/n/n56a3ff21db36" target="_blank">
@@ -1742,9 +1763,7 @@
 
           <div class="Module Module--narrow">
             <h2 class="NormalArticle__heading Module__item">いつもの毎日がちょっと特別になる。<br>「ケの日のハレ」を届けます。</h2>
-            <p class="NormalArticle__text Module__item">スマホやパソコンから離れて、大きなお風呂でゆっくりしたり、
-湯上りに最高の一杯を味わったり。<br>日常（ケの日）を特別な日（ハレの日）にしてくれる銭湯のように、
-あなたの毎日がちょっと特別になる体験をお届けします。</p>
+            <p class="NormalArticle__text Module__item">スマホやパソコンから離れて、大きなお風呂でゆっくりしたり、湯上がりに最高の一杯を味わったり。<br>日常（ケの日）を特別な日（ハレの日）にしてくれる銭湯のように、あなたの毎日がちょっと特別になる体験をお届けします。</p>
           </div>
           <!-- / .Module -->
 
@@ -1765,7 +1784,7 @@
               <li class="GridList__item">
                 <div class="SubArticle">
                   <h3 class="SubArticle__heading">日々の季節を<br>感じるもの</h3>
-                  <p class="SubArticle__text u-spacingLargeT">夏の菖蒲湯、冬の柚子湯。日本のお風呂は、季節に合わせて楽しみ方が変わります。湯上りの時間ですらも、冬は外の冷たい空気を心地よく感じたり、夏は夜風が気持ちよかったり。日々見過ごしてしまいそうな季節をお風呂とともに感じることができる体験をお届けします。</p>
+                  <p class="SubArticle__text u-spacingLargeT">夏の菖蒲湯、冬の柚子湯。日本のお風呂は、季節に合わせて楽しみ方が変わります。湯上がりの時間ですらも、冬は外の冷たい空気を心地よく感じたり、夏は夜風が気持ちよかったり。日々見過ごしてしまいそうな季節をお風呂とともに感じることができる体験をお届けします。</p>
                 </div>
               </li>
               <li class="GridList__item">
