@@ -120,7 +120,7 @@
       --color-abstract-white: #fff;
       --color-abstract-green: #44b541;
       --color-abstract-red: #ed143d;
-      --color-semantic-alert: var(----color-abstract-red);
+      --color-semantic-alert: var(--color-abstract-red);
       --color-text-main: var(--color-abstract-black);
       --color-text-sub: var(--color-abstract-dark-gray);
       --color-text-withDarkBackground: var(--color-abstract-white);
@@ -146,6 +146,7 @@
       --line-height-base: 1.5;
       --line-height-thick: 2;
       --letter-spacing-base: 0.04em;
+      --border-radius-normal: 4px;
       --max-width-wide: 1024px;
       --max-width-normal: 960px;
       --max-width-narrow: 640px;
@@ -234,10 +235,16 @@
       text-decoration: none;
       line-height: var(--line-height-monolithic);
       transition: var(--transition-hover);
+      border: none;
+    }
+    
+    .Button--block {
+      display: block;
     }
 
     .Button--fill {
       display: block;
+      width: 100%;
     }
 
     .Button--dark {
@@ -344,6 +351,23 @@
       border-color: var(--color-abstract-red);
     }
 
+    /**
+    * TextInput
+    */
+    .TextInput {
+      width: 100%;
+      padding: var(--spacing-middle);
+      font-size: var(--font-size-small);
+      border: solid 1px var(--color-abstract-bright-gray);
+    }
+    
+    .TextInput::placeholder {
+      color: var(--color-text-sub);
+    }
+    
+    .TextInput.TextInput {
+      border-radius: var(--border-radius-normal);
+    }
 
     /**
     * Logo
@@ -372,9 +396,9 @@
 
 
     /**
-    * ExternalLinkBox
+    * AnnounceBox
     */
-    .ExternalLinkBox {
+    .AnnounceBox {
       display: flex;
       align-items: center;
       justify-content: space-around;
@@ -382,21 +406,52 @@
       border: solid 1px var(--color-abstract-bright-gray);
       padding: var(--spacing-XXLarge);
     }
-
-    .ExternalLinkBox__text {
-      max-width: 320px;
-      font-size: var(--font-size-small);
+    
+    .AnnounceBox__column {
+      width: 100%;
+      max-width: 380px;
+    }
+    
+    .AnnounceBox__column + .AnnounceBox__column {
+     margin-left: var(--spacing-XXLarge);
+    }
+    
+    .AnnounceBox__heading {
+      font-size: var(--font-size-XLarge);
       color: var(--color-text-main);
     }
 
+    .AnnounceBox__text {
+      font-size: var(--font-size-small);
+      color: var(--color-text-main);
+    }
+    
+    .AnnounceBox__text--weaken {
+      color: var(--color-text-sub);
+    }
+    
+    .AnnounceBox__heading + .AnnounceBox__text {
+      margin-top: var(--spacing-large);
+    }
+    
+    .AnnounceBox__formItem + .AnnounceBox__formItem {
+      margin-top: var(--spacing-XLarge);
+    }
+
     @media screen and (max-width: 700px) {
-      .ExternalLinkBox {
+      .AnnounceBox {
         flex-direction: column;
       }
-  
-      .ExternalLinkBox__button {
+      
+      .AnnounceBox__column + .AnnounceBox__column {
+        margin-left: 0;
         margin-top: var(--spacing-large);
       }
+      
+      .AnnounceBox__formItem + .AnnounceBox__formItem {
+        margin-top: var(--spacing-large);
+      }
+      
     }
 
 
@@ -590,7 +645,7 @@
       position: relative;
       width: 100%;
       margin-left: var(--spacing-normal);
-      border-radius: 4px;
+      border-radius: var(--border-radius-normal);
       background-size: cover;
       background-position: center;
       background-repeat: no-repeat;
@@ -1485,9 +1540,22 @@
     .u-spacingLargeT {
       margin-top: var(--spacing-large);
     }
+    
+    .u-spacingLargeB {
+      margin-bottom: var(--spacing-large);
+    }
 
-    .u-spacingXLargev {
+    .u-spacingXLargeV {
       margin-top: var(--spacing-XLarge);
+      margin-bottom: var(--spacing-XLarge);
+    }
+    
+    .u-spacingXLargeB {
+      margin-bottom: var(--spacing-XLarge);
+    }
+    
+    .u-spacingXXLargeT {
+      margin-top: var(--spacing-XXLarge);
     }
   </style>
   {block:ItemPage}
@@ -1747,13 +1815,22 @@
               <p class="NormalArticle__text">この場所は、銭湯がまちに開かれたお風呂であるように、それぞれのくらしを持ち寄れる、“まちに開かれたもうひとつの家”のような場所を目指しています。</p>
               <p class="NormalArticle__text">大きなお風呂に入ったあとに、最高の一杯を飲んだり、季節を感じるものに出会ったり。<br>私たちが「小杉湯となり」を通して体験してほしかった時間を、この場所に来られない方にも届けたい。</p>
               <p class="NormalArticle__text">そんな想いから、私たちが銭湯のあるくらしの中で『心地いい！』と感じたものだけをセレクトしてお届けする、「銭湯のあるくらし便」が生まれました。</p>
-              <p class="NormalArticle__text">銭湯のとなりにくらしているような、日々のすてきな余白があなたのおうちにも届きますように。
-</p>
+              <p class="NormalArticle__text">銭湯のとなりにくらしているような、日々のすてきな余白があなたのおうちにも届きますように。</p>
             </div>
-            <!--<a class="ExternalLinkBox Module__item" href="https://note.com/sentogurashi/n/n56a3ff21db36" target="_blank">
-              <p class="ExternalLinkBox__text">ここに書ききれない想いをnoteにて公開しております。ご一読いただけましたら幸いです。</p>
-              <div class="ExternalLinkBox__button Button Button--dark">noteで続きを読む</div>
-            </a>-->
+            
+            
+            <a class="AnnounceBox Module__item" href="https://note.com/sentogurashi/n/n56a3ff21db36" target="_blank">
+              <div class="AnnounceBox__column">
+                <p class="AnnounceBox__text">ここに書ききれない想いをnoteにて公開しております。ご一読いただけましたら幸いです。</p>
+              </div>
+              <!-- / .AnnounceBox__column -->
+              <div class="AnnounceBox__column">
+                <div class="AnnounceBox__button Button Button--block Button--dark">noteで続きを読む</div>
+              </div>
+              <!-- / .AnnounceBox__column -->
+            </a>
+            <!-- / .AnnounceBox -->
+
           </div>
           <!-- / .Module -->
       
@@ -1767,7 +1844,7 @@
           </div>
           <!-- / .Module -->
 
-          <div class="Module Module--normal u-spacingXLargev">
+          <div class="Module Module--normal u-spacingXLargeV">
             <ul class="GridList">
               <li class="GridList__item">
                 <div class="SubArticle">
@@ -1796,6 +1873,8 @@
             </ul>
           </div>
           <!-- / .Module -->
+
+
         </article>
       </section>
     {/block:AboutPage}
@@ -1823,6 +1902,26 @@
         </div>
       </section>
     {/block:LawPage}
+    
+    <div class="Module u-spacingXXLargeT">
+      <aside class="AnnounceBox Module__item">
+        <div class="AnnounceBox__column">
+          <h4 class="AnnounceBox__heading">いちはやく、<br>銭湯のあるくらし商品を<br>取り入れたい方へ。</h4>
+          <p class="AnnounceBox__text AnnounceBox__text--weaken">新商品の発売・再入荷のご連絡・セール情報等を<br>お知らせします。</p>
+        </div>
+        <!-- / .AnnounceBox__column -->
+        <div class="AnnounceBox__column">
+        <form action="https://sentogurashi.us18.list-manage.com/subscribe/post?u=e80778fca6e1d4bc40f69bccb&amp;id=7bf9fb5a41" method="post" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+          <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="b_e80778fca6e1d4bc40f69bccb_7bf9fb5a41" tabindex="-1" value=""></div>
+          <input type="email" class="AnnounceBox__formItem TextInput" placeholder="example@example.com"  name="EMAIL" required>
+          <button type="submit" class="AnnounceBox__formItem AnnounceBox__button Button Button--fill Button--dark" name="subscribe">お知らせを受け取る</button>
+        </div>
+        <!-- / .AnnounceBox__column -->
+      </aside>
+      <!-- / .AnnounceBox -->
+    </div>
+    <!-- / .Module -->
+
   </main>
 
   <footer class="Footer">
@@ -2293,17 +2392,25 @@
     */
     const setEvent = (element, category, action, label = '') => {
       element.addEventListener('click', () => {
-        console.log(ga);
         ga.send('send', 'event', category, action, label);
       });
     }
     // カート（予約商品込）
+    /**
+    * @type {HTMLElement | null}
+    */
     const addToCartButton = document.querySelector('.purchaseButton__btn--addToCart');
     if (addToCartButton) setEvent(addToCartButton, 'purchase', 'addToCart', '{ItemTitle}');
     // 再入荷問い合わせ
+    /**
+    * @type {HTMLElement | null}
+    */
     const noItemButton = document.querySelector('.purchaseButton__btn--noItem');
     if (noItemButton ) setEvent(noItemButton , 'purchase', 'contactForNoItem', '{ItemTitle}');
     // 販売待ちニュースレター申し込み
+    /**
+    * @type {HTMLElement | null}
+    */
     const comingSoonButton = document.querySelector('.purchaseButton__btn--comingSoon');
     if (noItemButton ) setEvent(noItemButton , 'purchase', 'requestNoticeForSale', '{ItemTitle}');
   }
