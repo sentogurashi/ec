@@ -495,7 +495,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     * Content
     */
     .Content {
-      margin: var(--spacing-XXLarge) auto;
+      margin: 0 auto;
     }
 
     @media screen and (max-width: 700px) {
@@ -788,7 +788,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     .Header {
       position: relative;
       padding-top: 1px;
-      border-bottom: 1px solid var(--color-abstract-pale-gray);
     }
 
     .Header__title {
@@ -1166,6 +1165,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       width: 100%;
       height: 100%;
       padding: var(--spacing-XLarge);
+      transition: opacity .5s ease;
+      opacity: 0;
+    }
+
+    .HeroImage__messageItem.is-fadein {
+      opacity: 1;
     }
 
     .HeroImage__messageElement {
@@ -1211,6 +1216,41 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
+      transition: opacity 1s ease;
+    }
+
+    .HeroImage__photoItem.is-fade {
+      opacity: 0;
+    }
+
+    .HeroImage__photoItem.is-fadeEnd {
+      display: none;
+    }
+
+    .HeroImage__indicators {
+      display: flex;
+      position: absolute;
+      bottom: var(--spacing-XLarge);
+      left: var(--spacing-XLarge);
+    }
+
+    .HeroImage__indicator {
+      width: var(--spacing-middle);
+      height: var(--spacing-middle);
+      margin-right: var(--spacing-middle);
+      border-radius: calc(var(--spacing-middle) / 2);
+      background-color: var(--color-abstract-white);
+      opacity: .5;
+    }
+
+    .HeroImage__indicatorInner {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .HeroImage__indicator.is-current {
+      opacity: 1;
     }
 
     @media screen and (max-width: 700px) {
@@ -1760,41 +1800,27 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <div class="Module Module--ultraWide">
         <div class="HeroImage">
           <ul class="HeroImage__photoList js-HeroImage__photoList">
-            <!--<li class="HeroImage__photoItem" style="background-image: url(https://sentogurashi.com/ec/hero_photo.jpg);"></li>
-            <li class="HeroImage__photoItem" style="background-image: url(https://dummyimage.com/600x400/ffc0cb/fff);"></li>
-            <li class="HeroImage__photoItem" style="background-image: url(https://dummyimage.com/600x400/666/fff);"></li>-->
+            <li class="HeroImage__photoItem js-HeroImage__photoItem--background"></li>
+            <li class="HeroImage__photoItem js-HeroImage__photoItem--foreground"></li>
           </ul>
           <ul class="HeroImage__messageList js-HeroImage__messageList">
-            <!--<li class="HeroImage__messageItem">
-              <h2 class="HeroImage__messageElement HeroImage__messageHeading">ひとつめ<br>ひとつめひとつめ。</h2>
-              <p class="HeroImage__messageElement HeroImage__messageText">いつもの毎日がちょっと特別になる。<br>「ケの日のハレ」を届けます。</p>
-              <a class="HeroImage__messageElement HeroImage__button Button Button--light" href="https://shop.sentogurashi.com/about">もっと読む</a>
-            </li>
-            <li class="HeroImage__messageItem">
-              <div class="HeroImage__messageImage" style="background-image: url(https://dummyimage.com/130x200/ffc0cb/fff);"></div>
-              <h2 class="HeroImage__messageElement HeroImage__messageHeading">定期便、<br>はじめました。</h2>
-              <p class="HeroImage__messageElement HeroImage__messageText">いつもの毎日がちょっと特別になる。<br>「ケの日のハレ」を届けます。</p>
-              <a class="HeroImage__messageElement HeroImage__button Button Button--light" href="https://shop.sentogurashi.com/about">もっと読む</a>
-            </li>
-            <li class="HeroImage__messageItem">
-              <h2 class="HeroImage__messageElement HeroImage__messageHeading">みっつめ。</h2>
-              <p class="HeroImage__messageElement HeroImage__messageText">いつもの毎日がちょっと特別になる。<br>「ケの日のハレ」を届けます。</p>
-              <a class="HeroImage__messageElement HeroImage__button Button Button--light" href="https://shop.sentogurashi.com/about">もっと読む</a>
-            </li>-->
           </ul>
+          <ul class="HeroImage__indicators js-HeroImage__indicators"></ul>
 
-          <script type="x/template" class="js-HeroImage__messagePhotoTemplate">
-            <li class="HeroImage__photoItem" style="background-image: url(<%= url %>);"></li>
+          <script type="x/template" class="js-HeroImage__indicatorTemplate">
+            <li class="HeroImage__indicator">
+              <a class="HeroImage__indicatorInner" href=""></a>
+            </li>
           </script>
 
           <script type="x/template" class="js-HeroImage__messageItemTemplate">
             <li class="HeroImage__messageItem">
-              <% if (icon) { %>
-                <div class="HeroImage__messageImage" style="background-image: url(<%= icon %>);"></div>
+              <% if (param.icon) { %>
+                <div class="HeroImage__messageImage" style="background-image: url(<%= param.icon %>);"></div>
               <% } %>
-              <h2 class="HeroImage__messageElement HeroImage__messageHeading"><%- heading %>></h2>
-              <p class="HeroImage__messageElement HeroImage__messageText"><%- text %></p>
-              <a class="HeroImage__messageElement HeroImage__button Button Button--light" href="<%= link %>"><%= linkText %></a>
+              <h2 class="HeroImage__messageElement HeroImage__messageHeading"><%- util.replaceBr(param.heading) %></h2>
+              <p class="HeroImage__messageElement HeroImage__messageText"><%- util.replaceBr(param.text) %></p>
+              <a class="HeroImage__messageElement HeroImage__button Button Button--light" href="<%= param.link %>"><%= param.linkText || 'もっと読む' %></a>
             </li>
           </script>
         </div>
@@ -2150,7 +2176,7 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
     <div class="Footer__copyright"><small>© 銭湯のあるくらし便 All rights reserved.</small></div>
   </footer>
   <div class="Loading js-Loading"></div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/ejs/3.1.3/ejs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ejs@2.0.7/ejs.min.js"></script>
 <script>
 //@ts-check
 (() => {
@@ -2248,7 +2274,6 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
         const animation = new Animation({
           element: this.element,
           animationClassName: 'is-animationToActive',
-          useAnimationEndClassName: false,
         });
         await animation.exec();
       }
@@ -2265,7 +2290,6 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
         const animation = new Animation({
           element: this.element,
           animationClassName: 'is-animationToInactive',
-          useAnimationEndClassName: false,
         });
         await animation.exec();
       }
@@ -2334,20 +2358,33 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
     * @constructor
     * @param {object} options
     * @param {HTMLElement} options.element - 対象Element
-    * @param {string} [options.animationClassName] - アニメーション中のスタイルクラス
+    * @param {string} [options.animationClassName] - アニメーション開始で付与するスタイルクラス
+    * @param {string} [options.removeEndClassName]  - アニメーション開始で除去するスタイルクラス
     * @param {string} [options.animationEndClassName]  - アニメーション後のスタイルクラス
-    * @param {boolean} [options.useAnimationEndClassName] - アニメーション後に痕跡を残さないか
+    * @param {boolean} [options.leaveAnimationClassName] - アニメーション後に痕跡を残さないか
     */
     constructor({ 
       element,
-      animationClassName = 'is-animating',
-      animationEndClassName = 'is-animationend',
-      useAnimationEndClassName = true,
+      animationClassName,
+      removeClassName,
+      animationEndClassName,
+      leaveAnimationClassName,
     }) {
       this.element = element;
       this.animationClassName = animationClassName;
+      this.removeClassName = removeClassName;
       this.animationEndClassName = animationEndClassName;
-      this.useAnimationEndClassName = useAnimationEndClassName;
+      this.leaveAnimationClassName = leaveAnimationClassName;
+    }
+
+    handler = (e) => {
+      this.element.removeEventListener('transitionend', this.handler);
+      this.element.removeEventListener('animationend', this.handler);
+      if (this.animationEndClassName) this.element.classList.add(this.animationEndClassName);
+      if (this.leaveAnimationClassName) {
+        return;
+      }
+      this.element.classList.remove(this.animationClassName);
     }
 
     /**
@@ -2356,20 +2393,20 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
     */
     exec() {
       return new Promise((resolve) => {
-        const handler = (e) => {
-          this.element.removeEventListener('transitionend', handler);
-          this.element.removeEventListener('animationend', handler);
-          this.element.classList.remove(this.animationClassName);
-          if (this.useAnimationEndClassName) this.element.classList.add(this.animationEndClassName)
+        this.element.addEventListener('transitionend', () => {
+          this.handler();
           resolve();
-        }
-        this.element.addEventListener('transitionend', handler, {
+          }, {
           once: true,
         });
-        this.element.addEventListener('animationend', handler, {
+        this.element.addEventListener('animationend', () => {
+          this.handler();
+          resolve();
+        }, {
           once: true,
         })
-        this.element.classList.add(this.animationClassName);
+        if (this.animationClassName) this.element.classList.add(this.animationClassName);
+        if (this.removeClassName) this.element.classList.remove(this.removeClassName);
       });
     }
 
@@ -2380,13 +2417,19 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
       this.element.classList.remove(this.animationClassName);
       this.element.classList.remove(this.animationEndClassName)
     }
+
+    clean() {
+      this.element.removeEventListener('transitionend', this.handler);
+      this.element.removeEventListener('animationend', this.handler);
+      this.reset();
+    }
   }
 
   /**
-  * フォトセレクタ
+  * スライドショウ
   * @class
   */
-  class PhotoSelector {
+  class SlideShow {
 
     /**
     * コンストラクタ
@@ -2476,7 +2519,7 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
     }
 
     /**
-    * stateをもとに描画する
+    * 自動再生する
     * @return {Promise<void>}
     */
     async autoplay() {
@@ -2498,11 +2541,6 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
       const CURRENT_CLASSNAME = 'is-current';
 
       if (this.states.isAnimation) return;
-
-      this.elements.selectors.forEach(selector => {
-        selector.classList.remove(CURRENT_CLASSNAME);
-      });
-      this.elements.selectors[current].classList.add(CURRENT_CLASSNAME);
   
       const animation = new Animation({
         element: foregroundDisplay,
@@ -2517,11 +2555,15 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
       await sleep(100);
       await animation.exec();
       foregroundDisplay.style.backgroundImage = `url(${targetImageUrl})`;
+
+      this.elements.selectors.forEach(selector => {
+        selector.classList.remove(CURRENT_CLASSNAME);
+      });
+      this.elements.selectors[current].classList.add(CURRENT_CLASSNAME);
+
       // すぐに描画リセットするとbackgroundImage設定が追いつかずチラつくので待つ
       await sleep(100);
       animation.reset();
-      console.log('b');
-
       this.states.isAnimation = false;
     }
   }
@@ -2542,8 +2584,134 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
     });
   };
 
+  /**
+  * 文字列からDOMを取得
+  * @param {string} str - DOM query
+  * @return {HTMLElement}
+  */
+  const generateHTMLElement = (str) => {
+    const div = document.createElement('div');
+    div.innerHTML = str;
+    return div.children[0];
+  }
+
+  /**
+  * 子要素を削除
+  * @param {HTMLElement} parent - 親
+  */
+  const removeChild = (parent) => {
+    Array.from(parent.children).forEach(child => {
+      parent.removeChild(child);
+    });
+  }
+
+  /**
+  * テンプレート関数を取得
+  * @param {string} query - DOM query
+  * @return {(param: {
+  * [key: string]: string | number;
+  * }) => HTMLElement}
+  */
+  const getTemplate = (query) => {
+    const util = {
+      replaceBr : str => str.replace(/\n/g, '<br>'),
+    }
+    const dom = document.querySelector(query);
+    const templateString = dom.innerText;
+    const templateFunction = ejs.compile(templateString);
+    return (param = {}) => generateHTMLElement(templateFunction({ param, util }));
+  }
+
+  const setupHeroImage = () => {
+
+    const imageList = [
+      'https://dummyimage.com/600x400/ffc0cb/fff',
+      'https://sentogurashi.com/ec/hero_photo.jpg',
+    ];
+
+    const messageList = [
+      {
+        icon: 'https://dummyimage.com/130x200/ffc0cb/fff',
+        heading: 'テストその1',
+        text: 'ほげほげ',
+        link: 'http://google.com',
+      },
+      {
+        heading: 'テストその2\n改行',
+        text: 'ふがふが',
+        link: 'http://google.com',
+        linkText: 'リンクテキスト'
+      }
+    ]
+
+    /**
+    * @type {HTMLElement|null}
+    */
+    const displayElementBackground = document.querySelector('.js-HeroImage__photoItem--background');
+    /**
+    * @type {HTMLElement|null}
+    */
+    const displayElementForeground = document.querySelector('.js-HeroImage__photoItem--foreground');
+
+    if (!displayElementBackground || !displayElementForeground) return;
+
+    /**
+    * @type {HTMLElement[]|null}
+    */
+    const indicatorRoot = document.querySelector('.js-HeroImage__indicators');
+    const indicatorTemplate = getTemplate('.js-HeroImage__indicatorTemplate');
+
+    const selectorElements = imageList.map(() => {
+      const indicatorElement = indicatorTemplate()
+      indicatorElement.querySelector('a').addEventListener('click', (e) => {
+        e.preventDefault();
+      })
+      return indicatorRoot.appendChild(indicatorElement);
+    });;
+
+    const messageRoot = document.querySelector('.js-HeroImage__messageList');
+    const messageTemplate = getTemplate('.js-HeroImage__messageItemTemplate');
+
+    /**
+    * @param {number} index - ターゲットインデクス
+    */
+    const callback = async (index) => {
+      const FADEIN_CLASSNAME = 'is-fadein';
+      const oldMessageElement = messageRoot.children[0];
+      if (oldMessageElement) {
+        const fadeoutAnimation = new Animation({
+          element: oldMessageElement,
+          removeClassName: FADEIN_CLASSNAME,
+        });
+        await fadeoutAnimation.exec();
+        messageRoot.removeChild(oldMessageElement);
+      }
+      const newMessageElement = messageTemplate(messageList[index]);
+
+      messageRoot.appendChild(newMessageElement);
+
+      await sleep(100);
+
+      const fadeinAnimation = new Animation({
+        element: newMessageElement,
+        animationClassName: FADEIN_CLASSNAME,
+        leaveAnimationClassName: true,
+      });
+
+      await fadeinAnimation.exec();
+    }
+
+    new SlideShow({
+      displayElementBackground,
+      displayElementForeground,
+      selectorElements,
+      imageList,
+      autoplay: 5000,
+      callback,
+    })
+  };
+
   const setupPhotoSelector = () => {
-    const currentClassName = 'is-current';
     /**
     * @type {HTMLElement|null}
     */
@@ -2560,7 +2728,7 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
     const imageList = selectorElements.map(selectorElement => selectorElement.dataset.src);
 
     if (!displayElementBackground || !displayElementForeground) return;
-    new PhotoSelector({
+    new SlideShow({
       displayElementBackground,
       displayElementForeground,
       selectorElements,
@@ -2650,6 +2818,7 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    setupHeroImage();
     setupLoading();
     cutoffText();
     setupPhotoSelector();
