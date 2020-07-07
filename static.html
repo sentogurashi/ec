@@ -543,6 +543,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       .Module {
         padding: 0 var(--spacing-XLarge);
       }
+      .Module--ultraWide {
+        padding: 0;
+      }
     }
 
 
@@ -1141,7 +1144,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     */
     .HeroImage {
       position: relative;
-      height: 440px;
+      height: 540px;
       margin: 0 auto;
     }
 
@@ -1152,6 +1155,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       top: 40px; /* (440 - 360) / 2 */
       left: calc(50% + 180px);
       background-color: var(--color-abstract-white-translucent);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     }
 
     .HeroImage__messageItem {
@@ -1256,36 +1260,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     @media screen and (max-width: 700px) {
       .HeroImage {
         display: block;
-        height: auto;
       }
   
-      .HeroImage__stamp {
+      .HeroImage__photoList {
+        height: 350px;
+      }
+  
+      .HeroImage__messageList {
+        top: 175px; /* 350 / 2 */
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .HeroImage__indicators {
         display: none;
-      }
-  
-      .HeroImage__column {
-        height: auto;
-      }
-  
-      .HeroImage__column--main {
-        /* background-color: transparent; */
-      }
-  
-      .HeroImage__photo {
-        height: auto;
-      }
-  
-      .HeroImage__photo::after {
-        content: '';
-        display: block;
-        padding-bottom: var(--aspect-ratio-golden);
-      }
-  
-      .HeroImage__message {
-        width: auto;
-        height: 170px;
-        margin: 0;
-        padding: var(--spacing-XXLarge);
       }
     }
 
