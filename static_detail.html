@@ -2918,8 +2918,6 @@ $(function(){
     }
   }
 
-
-
   /**
   * フォトセレクタ
   * @class
@@ -2933,11 +2931,17 @@ $(function(){
     * @param {HTMLElement} options.displayElementForeground - ディスプレイ前面要素
     * @param {HTMLElement} options.displayElementBackground - ディスプレイ背面要素
     * @param {HTMLElement[]} options.selectorElements - ディスプレイ背面要素
+    * @param {string[]} options.imageList - 画像リスト
+    * @param {(index: number) => void} [options.callback] - コールバック
+    * @param {boolean|number} options.autoplay - 自動再生するか、msecでも指定可
     */
     constructor({
       displayElementForeground,
       displayElementBackground,
       selectorElements,
+      imageList,
+      callback,
+      autoplay,
     }) {
       this.elements = {
         display: {
@@ -2946,20 +2950,39 @@ $(function(){
         },
         selectors: selectorElements,
       };
-      this.images = this.elements.selectors.map(selectorElement => selectorElement.dataset.src);
+  
       this.states = {
         current: 0,
         before: 0,
+        total: imageList.length,
+        imageList: imageList,
         isAnimation: false,
+        isAutoplay: !!autoplay,
+        autoplayInterval: typeof autoplay === 'number' ? autoplay : 3000,
       }
 
+      this.callback = callback;
+      this.init();
+    }
+
+    /**
+    * 初期化処理
+    * @return {Promise<void>}
+    */
+    async init() {
       this.elements.selectors.forEach((selectorElement, index) => {
         selectorElement.addEventListener('click', () => {
-          this.changeImage(index);
+          this.displayByIndex(index);
+          if (this.states.isAutoplay) this.states.isAutoplay = false;
         })
       })
+  
+      await this.render();
 
-      this.render();
+      if (this.states.isAutoplay) {
+        await sleep(this.states.autoplayInterval);
+        await this.autoplay();
+      }
     }
 
     /**
@@ -2967,10 +2990,37 @@ $(function(){
     * @param {number} target - ターゲットインデックス
     * @return {Promise<void>}
     */
-    async changeImage(target) {
-      if (this.states.isAnimation) return;
+    async displayByIndex(target) {
+      const { before, isAnimation } = this.states;
+      if (isAnimation || target === before) return;
       this.states.current = target;
       await this.render();
+      this.states.before = target;
+    }
+
+    /**
+    * 次へ
+    * @return {Promise<void>}
+    */
+    async next() {
+      const { current, total } = this.states;
+      if(current >= (total - 1)) {
+        await this.displayByIndex(0)
+      } else {
+        await this.displayByIndex(current + 1)
+      }
+    }
+
+    /**
+    * stateをもとに描画する
+    * @return {Promise<void>}
+    */
+    async autoplay() {
+      const { isAutoplay, autoplayInterval } = this.states;
+      if (!isAutoplay) return;
+      this.next();
+      await sleep(autoplayInterval);
+      this.autoplay();
     }
 
     /**
@@ -2978,19 +3028,17 @@ $(function(){
     * @return {Promise<void>}
     */
     async render() {
-      const { current, before } = this.states;
+      const { current, before, imageList } = this.states;
       const { foreground: foregroundDisplay, background: backgroundDisplay } = this.elements.display;
-      const targetImageUrl = this.images[current];
-      const currentClassName = 'is-current';
+      const targetImageUrl = imageList[current];
+      const CURRENT_CLASSNAME = 'is-current';
 
       if (this.states.isAnimation) return;
 
       this.elements.selectors.forEach(selector => {
-        selector.classList.remove(currentClassName);
+        selector.classList.remove(CURRENT_CLASSNAME);
       });
-      this.elements.selectors[current].classList.add(currentClassName);
-
-      if (current === before) return;
+      this.elements.selectors[current].classList.add(CURRENT_CLASSNAME);
   
       const animation = new Animation({
         element: foregroundDisplay,
@@ -2999,6 +3047,7 @@ $(function(){
       })
       
       this.states.isAnimation = true;
+      if (this.callback) this.callback(current);
 
       backgroundDisplay.style.backgroundImage = `url(${targetImageUrl})`;
       await sleep(100);
@@ -3007,8 +3056,7 @@ $(function(){
       // すぐに描画リセットするとbackgroundImage設定が追いつかずチラつくので待つ
       await sleep(100);
       animation.reset();
-
-      this.states.before = current;
+      console.log('b');
 
       this.states.isAnimation = false;
     }
@@ -3045,11 +3093,15 @@ $(function(){
     */
     const selectorElements = Array.from(document.querySelectorAll('.js-PhotoSelector__selectorItem'));
 
+    const imageList = selectorElements.map(selectorElement => selectorElement.dataset.src);
+
     if (!displayElementBackground || !displayElementForeground) return;
     new PhotoSelector({
       displayElementBackground,
       displayElementForeground,
       selectorElements,
+      imageList,
+      autoplay: true,
     })
   };
 
@@ -3118,19 +3170,19 @@ $(function(){
     * @type {HTMLElement | null}
     */
     const addToCartButton = document.querySelector('.purchaseButton__btn--addToCart');
-    if (addToCartButton) setEvent(addToCartButton, 'purchase', 'addToCart', '銭湯のあるくらし体験セット：夏');
+    if (addToCartButton) setEvent(addToCartButton, 'purchase', 'addToCart', 'おうちで小杉湯セット');
     // 再入荷問い合わせ
     /**
     * @type {HTMLElement | null}
     */
     const noItemButton = document.querySelector('.purchaseButton__btn--noItem');
-    if (noItemButton ) setEvent(noItemButton , 'purchase', 'contactForNoItem', '銭湯のあるくらし体験セット：夏');
+    if (noItemButton ) setEvent(noItemButton , 'purchase', 'contactForNoItem', 'おうちで小杉湯セット');
     // 販売待ちニュースレター申し込み
     /**
     * @type {HTMLElement | null}
     */
     const comingSoonButton = document.querySelector('.purchaseButton__btn--comingSoon');
-    if (noItemButton ) setEvent(noItemButton , 'purchase', 'requestNoticeForSale', '銭湯のあるくらし体験セット：夏');
+    if (noItemButton ) setEvent(noItemButton , 'purchase', 'requestNoticeForSale', 'おうちで小杉湯セット');
   }
 
   document.addEventListener('DOMContentLoaded', () => {
