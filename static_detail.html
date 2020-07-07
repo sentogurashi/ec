@@ -415,6 +415,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       border-radius: 0;
     }
 
+    ul, ol {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    li {
+      list-style: none;
+    }
+
     /**
     * base
     */
@@ -2784,7 +2794,6 @@ $(function(){
         const animation = new Animation({
           element: this.element,
           animationClassName: 'is-animationToActive',
-          useAnimationEndClassName: false,
         });
         await animation.exec();
       }
@@ -2801,7 +2810,6 @@ $(function(){
         const animation = new Animation({
           element: this.element,
           animationClassName: 'is-animationToInactive',
-          useAnimationEndClassName: false,
         });
         await animation.exec();
       }
@@ -2870,20 +2878,39 @@ $(function(){
     * @constructor
     * @param {object} options
     * @param {HTMLElement} options.element - 対象Element
-    * @param {string} [options.animationClassName] - アニメーション中のスタイルクラス
+    * @param {string} [options.animationClassName] - アニメーション開始で付与するスタイルクラス
+    * @param {string} [options.removeEndClassName]  - アニメーション開始で除去するスタイルクラス
     * @param {string} [options.animationEndClassName]  - アニメーション後のスタイルクラス
-    * @param {boolean} [options.useAnimationEndClassName] - アニメーション後に痕跡を残さないか
+    * @param {boolean} [options.leaveAnimationClassName] - アニメーション後に痕跡を残さないか
     */
     constructor({ 
       element,
-      animationClassName = 'is-animating',
-      animationEndClassName = 'is-animationend',
-      useAnimationEndClassName = true,
+      animationClassName,
+      removeClassName,
+      animationEndClassName,
+      leaveAnimationClassName,
     }) {
       this.element = element;
       this.animationClassName = animationClassName;
+      this.removeClassName = removeClassName;
       this.animationEndClassName = animationEndClassName;
-      this.useAnimationEndClassName = useAnimationEndClassName;
+      this.leaveAnimationClassName = leaveAnimationClassName;
+      this.handler = this.handler.bind(this);
+    }
+
+    /**
+    * ハンドラ
+    * @return {void}
+    */
+    // hander = (e) => {} の書き方がSafariなどで未対応なためとりま
+    handler (e) {
+      this.element.removeEventListener('transitionend', this.handler);
+      this.element.removeEventListener('animationend', this.handler);
+      if (this.animationEndClassName) this.element.classList.add(this.animationEndClassName);
+      if (this.leaveAnimationClassName) {
+        return;
+      }
+      this.element.classList.remove(this.animationClassName);
     }
 
     /**
@@ -2892,20 +2919,20 @@ $(function(){
     */
     exec() {
       return new Promise((resolve) => {
-        const handler = (e) => {
-          this.element.removeEventListener('transitionend', handler);
-          this.element.removeEventListener('animationend', handler);
-          this.element.classList.remove(this.animationClassName);
-          if (this.useAnimationEndClassName) this.element.classList.add(this.animationEndClassName)
+        this.element.addEventListener('transitionend', () => {
+          this.handler();
           resolve();
-        }
-        this.element.addEventListener('transitionend', handler, {
+          }, {
           once: true,
         });
-        this.element.addEventListener('animationend', handler, {
+        this.element.addEventListener('animationend', () => {
+          this.handler();
+          resolve();
+        }, {
           once: true,
         })
-        this.element.classList.add(this.animationClassName);
+        if (this.animationClassName) this.element.classList.add(this.animationClassName);
+        if (this.removeClassName) this.element.classList.remove(this.removeClassName);
       });
     }
 
@@ -2916,13 +2943,19 @@ $(function(){
       this.element.classList.remove(this.animationClassName);
       this.element.classList.remove(this.animationEndClassName)
     }
+
+    clean() {
+      this.element.removeEventListener('transitionend', this.handler);
+      this.element.removeEventListener('animationend', this.handler);
+      this.reset();
+    }
   }
 
   /**
-  * フォトセレクタ
+  * スライドショウ
   * @class
   */
-  class PhotoSelector {
+  class SlideShow {
 
     /**
     * コンストラクタ
@@ -3012,7 +3045,7 @@ $(function(){
     }
 
     /**
-    * stateをもとに描画する
+    * 自動再生する
     * @return {Promise<void>}
     */
     async autoplay() {
@@ -3034,11 +3067,6 @@ $(function(){
       const CURRENT_CLASSNAME = 'is-current';
 
       if (this.states.isAnimation) return;
-
-      this.elements.selectors.forEach(selector => {
-        selector.classList.remove(CURRENT_CLASSNAME);
-      });
-      this.elements.selectors[current].classList.add(CURRENT_CLASSNAME);
   
       const animation = new Animation({
         element: foregroundDisplay,
@@ -3053,11 +3081,15 @@ $(function(){
       await sleep(100);
       await animation.exec();
       foregroundDisplay.style.backgroundImage = `url(${targetImageUrl})`;
+
+      this.elements.selectors.forEach(selector => {
+        selector.classList.remove(CURRENT_CLASSNAME);
+      });
+      this.elements.selectors[current].classList.add(CURRENT_CLASSNAME);
+
       // すぐに描画リセットするとbackgroundImage設定が追いつかずチラつくので待つ
       await sleep(100);
       animation.reset();
-      console.log('b');
-
       this.states.isAnimation = false;
     }
   }
@@ -3078,8 +3110,134 @@ $(function(){
     });
   };
 
+  /**
+  * 文字列からDOMを取得
+  * @param {string} str - DOM query
+  * @return {HTMLElement}
+  */
+  const generateHTMLElement = (str) => {
+    const div = document.createElement('div');
+    div.innerHTML = str;
+    return div.children[0];
+  }
+
+  /**
+  * 子要素を削除
+  * @param {HTMLElement} parent - 親
+  */
+  const removeChild = (parent) => {
+    Array.from(parent.children).forEach(child => {
+      parent.removeChild(child);
+    });
+  }
+
+  /**
+  * テンプレート関数を取得
+  * @param {string} query - DOM query
+  * @return {(param: {
+  * [key: string]: string | number;
+  * }) => HTMLElement}
+  */
+  const getTemplate = (query) => {
+    const util = {
+      replaceBr : str => str.replace(/\n/g, '<br>'),
+    }
+    const dom = document.querySelector(query);
+    const templateString = dom.innerText;
+    const templateFunction = ejs.compile(templateString);
+    return (param = {}) => generateHTMLElement(templateFunction({ param, util }));
+  }
+
+  const setupHeroImage = () => {
+
+    const imageList = [
+      'https://sentogurashi.com/ec/hero/hero_photo_20200706.jpg',
+      'https://sentogurashi.com/ec/hero_photo.jpg',
+    ];
+
+    const messageList = [
+      {
+        icon: 'https://sentogurashi.com/ec/hero/hero_icon_20200706.png',
+        heading: '定期便、\nはじめました。',
+        text: 'いつもの毎日がちょっと特別になる。\n「ケの日のハレ」を届けます。',
+        link: 'http://google.com',
+        linkText: '定期便を見る',
+      },
+      {
+        heading: '見出しその2\n改行',
+        text: 'ふがふが',
+        link: 'http://google.com',
+      }
+    ]
+
+    /**
+    * @type {HTMLElement|null}
+    */
+    const displayElementBackground = document.querySelector('.js-HeroImage__photoItem--background');
+    /**
+    * @type {HTMLElement|null}
+    */
+    const displayElementForeground = document.querySelector('.js-HeroImage__photoItem--foreground');
+
+    if (!displayElementBackground || !displayElementForeground) return;
+
+    /**
+    * @type {HTMLElement[]|null}
+    */
+    const indicatorRoot = document.querySelector('.js-HeroImage__indicators');
+    const indicatorTemplate = getTemplate('.js-HeroImage__indicatorTemplate');
+
+    const selectorElements = imageList.map(() => {
+      const indicatorElement = indicatorTemplate()
+      indicatorElement.querySelector('a').addEventListener('click', (e) => {
+        e.preventDefault();
+      })
+      return indicatorRoot.appendChild(indicatorElement);
+    });;
+
+    const messageRoot = document.querySelector('.js-HeroImage__messageList');
+    const messageTemplate = getTemplate('.js-HeroImage__messageItemTemplate');
+
+    /**
+    * @param {number} index - ターゲットインデクス
+    */
+    const callback = async (index) => {
+      const FADEIN_CLASSNAME = 'is-fadein';
+      const oldMessageElement = messageRoot.children[0];
+      if (oldMessageElement) {
+        const fadeoutAnimation = new Animation({
+          element: oldMessageElement,
+          removeClassName: FADEIN_CLASSNAME,
+        });
+        await fadeoutAnimation.exec();
+        messageRoot.removeChild(oldMessageElement);
+      }
+      const newMessageElement = messageTemplate(messageList[index]);
+
+      messageRoot.appendChild(newMessageElement);
+
+      await sleep(100);
+
+      const fadeinAnimation = new Animation({
+        element: newMessageElement,
+        animationClassName: FADEIN_CLASSNAME,
+        leaveAnimationClassName: true,
+      });
+
+      await fadeinAnimation.exec();
+    }
+
+    new SlideShow({
+      displayElementBackground,
+      displayElementForeground,
+      selectorElements,
+      imageList,
+      autoplay: 5000,
+      callback,
+    })
+  };
+
   const setupPhotoSelector = () => {
-    const currentClassName = 'is-current';
     /**
     * @type {HTMLElement|null}
     */
@@ -3096,7 +3254,7 @@ $(function(){
     const imageList = selectorElements.map(selectorElement => selectorElement.dataset.src);
 
     if (!displayElementBackground || !displayElementForeground) return;
-    new PhotoSelector({
+    new SlideShow({
       displayElementBackground,
       displayElementForeground,
       selectorElements,
@@ -3186,6 +3344,7 @@ $(function(){
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    setupHeroImage();
     setupLoading();
     cutoffText();
     setupPhotoSelector();
