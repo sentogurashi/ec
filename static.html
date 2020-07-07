@@ -2372,6 +2372,7 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
       this.removeClassName = removeClassName;
       this.animationEndClassName = animationEndClassName;
       this.leaveAnimationClassName = leaveAnimationClassName;
+      // hander = (e) => {} の書き方がSafariなどで未対応なためとりま
       this.handler = this.handler.bind(this);
     }
 
@@ -2379,7 +2380,6 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
     * ハンドラ
     * @return {void}
     */
-    // hander = (e) => {} の書き方がSafariなどで未対応なためとりま
     handler (e) {
       this.element.removeEventListener('transitionend', this.handler);
       this.element.removeEventListener('animationend', this.handler);
@@ -2528,7 +2528,7 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
     async autoplay() {
       const { isAutoplay, autoplayInterval } = this.states;
       if (!isAutoplay) return;
-      this.next();
+      await this.next();
       await sleep(autoplayInterval);
       this.autoplay();
     }
