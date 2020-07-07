@@ -2165,7 +2165,7 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
     <div class="Footer__copyright"><small>© 銭湯のあるくらし便 All rights reserved.</small></div>
   </footer>
   <div class="Loading js-Loading"></div>
-<script src="http://sentogurashi.com/ec/lib/ejs.min.js"></script>
+<script src="https://sentogurashi.com/ec/lib/ejs.min.js"></script>
 <script>
 //@ts-check
 (() => {
@@ -2364,9 +2364,15 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
       this.removeClassName = removeClassName;
       this.animationEndClassName = animationEndClassName;
       this.leaveAnimationClassName = leaveAnimationClassName;
+      this.handler = this.handler.bind(this);
     }
 
-    handler = (e) => {
+    /**
+    * ハンドラ
+    * @return {void}
+    */
+    // hander = (e) => {} の書き方がSafariなどで未対応なためとりま
+    handler (e) {
       this.element.removeEventListener('transitionend', this.handler);
       this.element.removeEventListener('animationend', this.handler);
       if (this.animationEndClassName) this.element.classList.add(this.animationEndClassName);
@@ -2614,13 +2620,13 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
   const setupHeroImage = () => {
 
     const imageList = [
-      'http://sentogurashi.com/ec/hero/hero_photo_20200706.jpg',
+      'https://sentogurashi.com/ec/hero/hero_photo_20200706.jpg',
       'https://sentogurashi.com/ec/hero_photo.jpg',
     ];
 
     const messageList = [
       {
-        icon: 'http://sentogurashi.com/ec/hero/hero_icon_20200706.png',
+        icon: 'https://sentogurashi.com/ec/hero/hero_icon_20200706.png',
         heading: '定期便、\nはじめました。',
         text: 'いつもの毎日がちょっと特別になる。\n「ケの日のハレ」を届けます。',
         link: 'http://google.com',
