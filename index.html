@@ -118,6 +118,7 @@
       --color-abstract-bright-gray: rgba(0, 0, 0, 0.16);
       --color-abstract-pale-gray: rgba(0, 0, 0, 0.03);
       --color-abstract-white: #fff;
+      --color-abstract-white-translucent: rgba(255, 255, 255, 0.9);
       --color-abstract-green: #44b541;
       --color-abstract-red: #ed143d;
       --color-semantic-alert: var(--color-abstract-red);
@@ -147,6 +148,7 @@
       --line-height-thick: 2;
       --letter-spacing-base: 0.04em;
       --border-radius-normal: 4px;
+      --max-width-ultraWide: 1600px;
       --max-width-wide: 1024px;
       --max-width-normal: 960px;
       --max-width-narrow: 640px;
@@ -195,6 +197,14 @@
     input[type='text'],
     textarea {
       border-radius: 0;
+    }
+    ul, ol {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    li {
+      list-style: none;
     }
 
     /**
@@ -359,6 +369,7 @@
       padding: var(--spacing-middle);
       font-size: var(--font-size-small);
       border: solid 1px var(--color-abstract-bright-gray);
+      -webkit-appearance: none;
     }
     
     .TextInput::placeholder {
@@ -459,7 +470,7 @@
     * Content
     */
     .Content {
-      margin: var(--spacing-XXLarge) auto;
+      margin: 0 auto;
     }
 
     @media screen and (max-width: 700px) {
@@ -490,6 +501,15 @@
       max-width: var(--max-width-wide);
     }
 
+    .Module--ultraWide {
+      max-width: var(--max-width-ultraWide);
+    }
+
+    .Module--full {
+      width: 100%;
+      max-width: none;
+    }
+
     .Module__item {
       margin: var(--spacing-XXXXXLarge) 0;
     }
@@ -497,6 +517,9 @@
     @media screen and (max-width: 700px) {
       .Module {
         padding: 0 var(--spacing-XLarge);
+      }
+      .Module--ultraWide {
+        padding: 0;
       }
     }
 
@@ -743,7 +766,6 @@
     .Header {
       position: relative;
       padding-top: 1px;
-      border-bottom: 1px solid var(--color-abstract-pale-gray);
     }
 
     .Header__title {
@@ -1096,95 +1118,140 @@
     * TopPage - HeroImage
     */
     .HeroImage {
-      display: flex;
-      height: 437px;
+      position: relative;
+      height: 440px;
       margin: 0 auto;
     }
 
-    .HeroImage__column {
-      height: 100%;
+    .HeroImage__messageList {
+      position: absolute;
+      width: 300px;
+      height: 360px;
+      top: 40px; /* (440 - 360) / 2 */
+      left: calc(50% + 180px);
+      background-color: var(--color-abstract-white-translucent);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
     }
 
-    .HeroImage__column--main {
-      flex-shrink: 0;
-      background-color: var(--color-abstract-pale-gray);
-    }
-
-    .HeroImage__column--sub {
-      flex-grow: 1;
-    }
-
-    .HeroImage__message {
+    .HeroImage__messageItem {
       display: flex;
-      margin: 15% 0;
-      width: 365px;
-      height: 70%;
       flex-direction: column;
-      justify-content: space-around;
-      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      padding: var(--spacing-XLarge);
+      transition: opacity .5s ease;
+      opacity: 0;
     }
 
-    .HeroImage__stamp {
-      width: 110px;
-      height: 96px;
+    .HeroImage__messageItem.is-fadein {
+      opacity: 1;
     }
 
-    .HeroImage__heading {
-      width: 220px;
-      height: 24px;
+    .HeroImage__messageElement {
+      margin-top: var(--spacing-large);
     }
 
-    .HeroImage__statement {
+    .HeroImage__messageElement:first-child {
+      margin-top: 0;
+    }
+
+    .HeroImage__messageHeading {
+      text-align: center;
+      font-size: var(--font-size-XLarge);
+    }
+
+    .HeroImage__messageImage {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+
+    .HeroImage__messageText {
       font-size: var(--font-size-small);
       text-align: center;
       line-height: var(--line-height-thick);
     }
 
-    .HeroImage__photo {
+    .HeroImage__photoList {
+      position: relative;
       width: 100%;
       height: 100%;
-      background-image: url(https://sentogurashi.com/ec/hero_photo.jpg);
+    }
+
+    .HeroImage__photoItem {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
       background-position: center;
       background-repeat: no-repeat;
       background-size: cover;
+      transition: opacity 1s ease;
+    }
+
+    .HeroImage__photoItem.is-fade {
+      opacity: 0;
+    }
+
+    .HeroImage__photoItem.is-fadeEnd {
+      display: none;
+    }
+
+    .HeroImage__indicators {
+      display: flex;
+      position: absolute;
+      bottom: var(--spacing-XLarge);
+      left: var(--spacing-XLarge);
+    }
+
+    .HeroImage__indicator {
+      width: var(--spacing-middle);
+      height: var(--spacing-middle);
+      margin-right: var(--spacing-middle);
+      border-radius: calc(var(--spacing-middle) / 2);
+      background-color: var(--color-abstract-white);
+      opacity: .5;
+    }
+
+    .HeroImage__indicatorInner {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .HeroImage__indicator.is-current {
+      opacity: 1;
     }
 
     @media screen and (max-width: 700px) {
       .HeroImage {
         display: block;
-        height: auto;
+        height: 540px;
       }
   
-      .HeroImage__stamp {
+      .HeroImage__photoList {
+        height: 350px;
+      }
+  
+      .HeroImage__messageList {
+        top: 175px; /* 350 / 2 */
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .HeroImage__indicators {
         display: none;
       }
-  
-      .HeroImage__column {
-        height: auto;
-      }
-  
-      .HeroImage__column--main {
-        /* background-color: transparent; */
-      }
-  
-      .HeroImage__photo {
-        height: auto;
-      }
-  
-      .HeroImage__photo::after {
-        content: '';
-        display: block;
-        padding-bottom: var(--aspect-ratio-golden);
-      }
-  
-      .HeroImage__message {
-        width: auto;
-        height: 170px;
-        margin: 0;
-        padding: var(--spacing-XXLarge);
-      }
     }
-
 
     /**
     * TopPage - ProductList
@@ -1642,9 +1709,10 @@
   </div>
   <header class="Header">
     <nav class="Header__nav">
-      <p class="Header__title">
-        <a href="{IndexPageURL}" class="Header__siteLogo Logo Logo--site">{LogoTag}</a>
-      </p>
+      <h1 class="Header__title">
+        <a href="{IndexPageURL}" class="Header__siteLogo Logo Logo--site">{LogoTag}
+        </a>
+      </h1>
       <ul class="Header__list">
         <li class="Header__listItem">
           <a class="Header__listItemInner NavigationItem" href="{IndexPageURL}">
@@ -1673,22 +1741,34 @@
   {block:IndexPage}
     {block:HasItems}
     <section class="Content">
-      <div class="Module Module--wide">
+      <div class="Module Module--ultraWide">
         <div class="HeroImage">
-          <div class="HeroImage__column HeroImage__column--sub">
-            <div class="HeroImage__photo"></div>
-          </div>
-          <div class="HeroImage__column HeroImage__column--main">
-            <div class="HeroImage__message">
-              <div class="HeroImage__stamp Logo Logo--stamp"></div>
-              <h1 class="HeroImage__heading Logo Logo--site">銭湯のあるくらし便</h1>
-              <p class="HeroImage__statement">いつもの毎日がちょっと特別になる。<br>「ケの日のハレ」を届けます。</p>
-              <a class="HeroImage__button Button Button--light" href="{AboutPageURL}">もっと読む</a>
-            </div>
-          </div>
+          <ul class="HeroImage__photoList js-HeroImage__photoList">
+            <li class="HeroImage__photoItem js-HeroImage__photoItem--background"></li>
+            <li class="HeroImage__photoItem js-HeroImage__photoItem--foreground"></li>
+          </ul>
+          <ul class="HeroImage__messageList js-HeroImage__messageList">
+          </ul>
+          <ul class="HeroImage__indicators js-HeroImage__indicators"></ul>
+
+          <script type="x/template" class="js-HeroImage__indicatorTemplate">
+            <li class="HeroImage__indicator">
+              <a class="HeroImage__indicatorInner" href=""></a>
+            </li>
+          </script>
+
+          <script type="x/template" class="js-HeroImage__messageItemTemplate">
+            <li class="HeroImage__messageItem">
+              <% if (param.icon) { %>
+                <div class="HeroImage__messageImage" style="background-image: url(<%= param.icon %>);"></div>
+              <% } %>
+              <h2 class="HeroImage__messageElement HeroImage__messageHeading"><%- util.replaceBr(param.heading) %></h2>
+              <p class="HeroImage__messageElement HeroImage__messageText"><%- util.replaceBr(param.text) %></p>
+              <a class="HeroImage__messageElement HeroImage__button Button Button--light" href="<%= param.link %>"><%= param.linkText || 'もっと読む' %></a>
+            </li>
+          </script>
         </div>
         <!-- / .HeroImage -->
-
       </div>
       <!-- / .Module -->
 
@@ -1969,6 +2049,7 @@
     <div class="Footer__copyright"><small>© {ShopName} All rights reserved.</small></div>
   </footer>
   <div class="Loading js-Loading"></div>
+<script src="https://sentogurashi.com/ec/lib/ejs.min.js"></script>
 <script>
 //@ts-check
 (() => {
@@ -2066,7 +2147,6 @@
         const animation = new Animation({
           element: this.element,
           animationClassName: 'is-animationToActive',
-          useAnimationEndClassName: false,
         });
         await animation.exec();
       }
@@ -2083,7 +2163,6 @@
         const animation = new Animation({
           element: this.element,
           animationClassName: 'is-animationToInactive',
-          useAnimationEndClassName: false,
         });
         await animation.exec();
       }
@@ -2152,20 +2231,39 @@
     * @constructor
     * @param {object} options
     * @param {HTMLElement} options.element - 対象Element
-    * @param {string} [options.animationClassName] - アニメーション中のスタイルクラス
+    * @param {string} [options.animationClassName] - アニメーション開始で付与するスタイルクラス
+    * @param {string} [options.removeClassName]  - アニメーション開始で除去するスタイルクラス
     * @param {string} [options.animationEndClassName]  - アニメーション後のスタイルクラス
-    * @param {boolean} [options.useAnimationEndClassName] - アニメーション後に痕跡を残さないか
+    * @param {boolean} [options.leaveAnimationClassName] - アニメーション後に痕跡を残さないか
     */
     constructor({ 
       element,
-      animationClassName = 'is-animating',
-      animationEndClassName = 'is-animationend',
-      useAnimationEndClassName = true,
+      animationClassName,
+      removeClassName,
+      animationEndClassName,
+      leaveAnimationClassName,
     }) {
       this.element = element;
       this.animationClassName = animationClassName;
+      this.removeClassName = removeClassName;
       this.animationEndClassName = animationEndClassName;
-      this.useAnimationEndClassName = useAnimationEndClassName;
+      this.leaveAnimationClassName = leaveAnimationClassName;
+      // hander = (e) => {} の書き方がSafariなどで未対応なためとりま
+      this.handler = this.handler.bind(this);
+    }
+
+    /**
+    * ハンドラ
+    * @return {void}
+    */
+    handler (e) {
+      this.element.removeEventListener('transitionend', this.handler);
+      this.element.removeEventListener('animationend', this.handler);
+      if (this.animationEndClassName) this.element.classList.add(this.animationEndClassName);
+      if (this.leaveAnimationClassName) {
+        return;
+      }
+      this.element.classList.remove(this.animationClassName);
     }
 
     /**
@@ -2174,20 +2272,20 @@
     */
     exec() {
       return new Promise((resolve) => {
-        const handler = (e) => {
-          this.element.removeEventListener('transitionend', handler);
-          this.element.removeEventListener('animationend', handler);
-          this.element.classList.remove(this.animationClassName);
-          if (this.useAnimationEndClassName) this.element.classList.add(this.animationEndClassName)
+        this.element.addEventListener('transitionend', () => {
+          this.handler();
           resolve();
-        }
-        this.element.addEventListener('transitionend', handler, {
+          }, {
           once: true,
         });
-        this.element.addEventListener('animationend', handler, {
+        this.element.addEventListener('animationend', () => {
+          this.handler();
+          resolve();
+        }, {
           once: true,
         })
-        this.element.classList.add(this.animationClassName);
+        if (this.animationClassName) this.element.classList.add(this.animationClassName);
+        if (this.removeClassName) this.element.classList.remove(this.removeClassName);
       });
     }
 
@@ -2198,15 +2296,19 @@
       this.element.classList.remove(this.animationClassName);
       this.element.classList.remove(this.animationEndClassName)
     }
+
+    clean() {
+      this.element.removeEventListener('transitionend', this.handler);
+      this.element.removeEventListener('animationend', this.handler);
+      this.reset();
+    }
   }
 
-
-
   /**
-  * フォトセレクタ
+  * スライドショウ
   * @class
   */
-  class PhotoSelector {
+  class SlideShow {
 
     /**
     * コンストラクタ
@@ -2215,11 +2317,17 @@
     * @param {HTMLElement} options.displayElementForeground - ディスプレイ前面要素
     * @param {HTMLElement} options.displayElementBackground - ディスプレイ背面要素
     * @param {HTMLElement[]} options.selectorElements - ディスプレイ背面要素
+    * @param {string[]} options.imageList - 画像リスト
+    * @param {(index: number) => void} [options.callback] - コールバック
+    * @param {boolean|number} options.autoplay - 自動再生するか、msecでも指定可
     */
     constructor({
       displayElementForeground,
       displayElementBackground,
       selectorElements,
+      imageList,
+      callback,
+      autoplay,
     }) {
       this.elements = {
         display: {
@@ -2228,20 +2336,39 @@
         },
         selectors: selectorElements,
       };
-      this.images = this.elements.selectors.map(selectorElement => selectorElement.dataset.src);
+  
       this.states = {
         current: 0,
         before: 0,
+        total: imageList.length,
+        imageList: imageList,
         isAnimation: false,
+        isAutoplay: !!autoplay,
+        autoplayInterval: typeof autoplay === 'number' ? autoplay : 3000,
       }
 
+      this.callback = callback;
+      this.init();
+    }
+
+    /**
+    * 初期化処理
+    * @return {Promise<void>}
+    */
+    async init() {
       this.elements.selectors.forEach((selectorElement, index) => {
         selectorElement.addEventListener('click', () => {
-          this.changeImage(index);
+          this.displayByIndex(index);
+          if (this.states.isAutoplay) this.states.isAutoplay = false;
         })
       })
+  
+      await this.render();
 
-      this.render();
+      if (this.states.isAutoplay) {
+        await sleep(this.states.autoplayInterval);
+        await this.autoplay();
+      }
     }
 
     /**
@@ -2249,10 +2376,37 @@
     * @param {number} target - ターゲットインデックス
     * @return {Promise<void>}
     */
-    async changeImage(target) {
-      if (this.states.isAnimation) return;
+    async displayByIndex(target) {
+      const { before, isAnimation } = this.states;
+      if (isAnimation || target === before) return;
       this.states.current = target;
       await this.render();
+      this.states.before = target;
+    }
+
+    /**
+    * 次へ
+    * @return {Promise<void>}
+    */
+    async next() {
+      const { current, total } = this.states;
+      if(current >= (total - 1)) {
+        await this.displayByIndex(0)
+      } else {
+        await this.displayByIndex(current + 1)
+      }
+    }
+
+    /**
+    * 自動再生する
+    * @return {Promise<void>}
+    */
+    async autoplay() {
+      const { isAutoplay, autoplayInterval } = this.states;
+      if (!isAutoplay) return;
+      await this.next();
+      await sleep(autoplayInterval);
+      this.autoplay();
     }
 
     /**
@@ -2260,19 +2414,12 @@
     * @return {Promise<void>}
     */
     async render() {
-      const { current, before } = this.states;
+      const { current, before, imageList } = this.states;
       const { foreground: foregroundDisplay, background: backgroundDisplay } = this.elements.display;
-      const targetImageUrl = this.images[current];
-      const currentClassName = 'is-current';
+      const targetImageUrl = imageList[current];
+      const CURRENT_CLASSNAME = 'is-current';
 
       if (this.states.isAnimation) return;
-
-      this.elements.selectors.forEach(selector => {
-        selector.classList.remove(currentClassName);
-      });
-      this.elements.selectors[current].classList.add(currentClassName);
-
-      if (current === before) return;
   
       const animation = new Animation({
         element: foregroundDisplay,
@@ -2281,17 +2428,21 @@
       })
       
       this.states.isAnimation = true;
+      if (this.callback) this.callback(current);
 
       backgroundDisplay.style.backgroundImage = `url(${targetImageUrl})`;
       await sleep(100);
       await animation.exec();
       foregroundDisplay.style.backgroundImage = `url(${targetImageUrl})`;
+
+      this.elements.selectors.forEach(selector => {
+        selector.classList.remove(CURRENT_CLASSNAME);
+      });
+      this.elements.selectors[current].classList.add(CURRENT_CLASSNAME);
+
       // すぐに描画リセットするとbackgroundImage設定が追いつかずチラつくので待つ
       await sleep(100);
       animation.reset();
-
-      this.states.before = current;
-
       this.states.isAnimation = false;
     }
   }
@@ -2312,8 +2463,141 @@
     });
   };
 
+  /**
+  * 文字列からDOMを取得
+  * @param {string} str - DOM query
+  * @return {HTMLElement}
+  */
+  const generateHTMLElement = (str) => {
+    const div = document.createElement('div');
+    div.innerHTML = str;
+    /**
+    * @type {HTMLElement}
+    */
+    const child = div.children[0];
+    return child;
+  }
+
+  /**
+  * 子要素を削除
+  * @param {HTMLElement} parent - 親
+  */
+  const removeChild = (parent) => {
+    Array.from(parent.children).forEach(child => {
+      parent.removeChild(child);
+    });
+  }
+
+  /**
+  * テンプレート関数を取得
+  * @param {string} query - DOM query
+  * @return {(param: {
+  * [key: string]: string | number;
+  * }) => HTMLElement}
+  */
+  const getTemplate = (query) => {
+    const util = {
+      replaceBr : str => str.replace(/\n/g, '<br>'),
+    }
+    /**
+    * @type {HTMLElement}
+    */
+    const dom = document.querySelector(query);
+    const templateString = dom.innerText;
+    const templateFunction = ejs.compile(templateString);
+    return (param = {}) => generateHTMLElement(templateFunction({ param, util }));
+  }
+
+  const setupHeroImage = () => {
+
+    const imageList = [
+      'https://sentogurashi.com/ec/hero/hero_photo_20200706.jpg',
+      'https://sentogurashi.com/ec/hero_photo.jpg',
+    ];
+
+    const messageList = [
+      {
+        icon: 'https://sentogurashi.com/ec/hero/hero_icon_20200706.png',
+        heading: '定期便、\nはじめました。',
+        text: 'いつもの毎日がちょっと特別になる。\n「ケの日のハレ」を届けます。',
+        link: 'http://google.com',
+        linkText: '定期便を見る',
+      },
+      {
+        heading: '見出しその2\n改行',
+        text: 'ふがふが',
+        link: 'http://google.com',
+      }
+    ]
+
+    /**
+    * @type {HTMLElement|null}
+    */
+    const displayElementBackground = document.querySelector('.js-HeroImage__photoItem--background');
+    /**
+    * @type {HTMLElement|null}
+    */
+    const displayElementForeground = document.querySelector('.js-HeroImage__photoItem--foreground');
+
+    if (!displayElementBackground || !displayElementForeground) return;
+
+    /**
+    * @type {HTMLElement[]|null}
+    */
+    const indicatorRoot = document.querySelector('.js-HeroImage__indicators');
+    const indicatorTemplate = getTemplate('.js-HeroImage__indicatorTemplate');
+
+    const selectorElements = imageList.map(() => {
+      const indicatorElement = indicatorTemplate()
+      indicatorElement.querySelector('a').addEventListener('click', (e) => {
+        e.preventDefault();
+      })
+      return indicatorRoot.appendChild(indicatorElement);
+    });;
+
+    const messageRoot = document.querySelector('.js-HeroImage__messageList');
+    const messageTemplate = getTemplate('.js-HeroImage__messageItemTemplate');
+
+    /**
+    * @param {number} index - ターゲットインデクス
+    */
+    const callback = async (index) => {
+      const FADEIN_CLASSNAME = 'is-fadein';
+      const oldMessageElement = messageRoot.children[0];
+      if (oldMessageElement) {
+        const fadeoutAnimation = new Animation({
+          element: oldMessageElement,
+          removeClassName: FADEIN_CLASSNAME,
+        });
+        await fadeoutAnimation.exec();
+        messageRoot.removeChild(oldMessageElement);
+      }
+      const newMessageElement = messageTemplate(messageList[index]);
+
+      messageRoot.appendChild(newMessageElement);
+
+      await sleep(100);
+
+      const fadeinAnimation = new Animation({
+        element: newMessageElement,
+        animationClassName: FADEIN_CLASSNAME,
+        leaveAnimationClassName: true,
+      });
+
+      await fadeinAnimation.exec();
+    }
+
+    new SlideShow({
+      displayElementBackground,
+      displayElementForeground,
+      selectorElements,
+      imageList,
+      autoplay: 5000,
+      callback,
+    })
+  };
+
   const setupPhotoSelector = () => {
-    const currentClassName = 'is-current';
     /**
     * @type {HTMLElement|null}
     */
@@ -2327,11 +2611,15 @@
     */
     const selectorElements = Array.from(document.querySelectorAll('.js-PhotoSelector__selectorItem'));
 
+    const imageList = selectorElements.map(selectorElement => selectorElement.dataset.src);
+
     if (!displayElementBackground || !displayElementForeground) return;
-    new PhotoSelector({
+    new SlideShow({
       displayElementBackground,
       displayElementForeground,
       selectorElements,
+      imageList,
+      autoplay: true,
     })
   };
 
@@ -2400,22 +2688,23 @@
     * @type {HTMLElement | null}
     */
     const addToCartButton = document.querySelector('.purchaseButton__btn--addToCart');
-    if (addToCartButton) setEvent(addToCartButton, 'purchase', 'addToCart', '{ItemTitle}');
+    if (addToCartButton) setEvent(addToCartButton, 'purchase', 'addToCart', 'おうちで小杉湯セット');
     // 再入荷問い合わせ
     /**
     * @type {HTMLElement | null}
     */
     const noItemButton = document.querySelector('.purchaseButton__btn--noItem');
-    if (noItemButton ) setEvent(noItemButton , 'purchase', 'contactForNoItem', '{ItemTitle}');
+    if (noItemButton ) setEvent(noItemButton , 'purchase', 'contactForNoItem', 'おうちで小杉湯セット');
     // 販売待ちニュースレター申し込み
     /**
     * @type {HTMLElement | null}
     */
     const comingSoonButton = document.querySelector('.purchaseButton__btn--comingSoon');
-    if (noItemButton ) setEvent(noItemButton , 'purchase', 'requestNoticeForSale', '{ItemTitle}');
+    if (noItemButton ) setEvent(noItemButton , 'purchase', 'requestNoticeForSale', 'おうちで小杉湯セット');
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    setupHeroImage();
     setupLoading();
     cutoffText();
     setupPhotoSelector();
