@@ -2688,19 +2688,19 @@
     * @type {HTMLElement | null}
     */
     const addToCartButton = document.querySelector('.purchaseButton__btn--addToCart');
-    if (addToCartButton) setEvent(addToCartButton, 'purchase', 'addToCart', 'おうちで小杉湯セット');
+    if (addToCartButton) setEvent(addToCartButton, 'purchase', 'addToCart','{ItemTitle}');
     // 再入荷問い合わせ
     /**
     * @type {HTMLElement | null}
     */
     const noItemButton = document.querySelector('.purchaseButton__btn--noItem');
-    if (noItemButton ) setEvent(noItemButton , 'purchase', 'contactForNoItem', 'おうちで小杉湯セット');
+    if (noItemButton ) setEvent(noItemButton , 'purchase', 'contactForNoItem','{ItemTitle}');
     // 販売待ちニュースレター申し込み
     /**
     * @type {HTMLElement | null}
     */
     const comingSoonButton = document.querySelector('.purchaseButton__btn--comingSoon');
-    if (noItemButton ) setEvent(noItemButton , 'purchase', 'requestNoticeForSale', 'おうちで小杉湯セット');
+    if (noItemButton ) setEvent(noItemButton , 'purchase', 'requestNoticeForSale','{ItemTitle}');
   }
 
   document.addEventListener('DOMContentLoaded', () => {
