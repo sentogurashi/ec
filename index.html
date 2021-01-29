@@ -1,6 +1,7 @@
 {block:NotLoadItemsPage}
 <html>
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# article: http://ogp.me/ns/article#">
+  <meta charset="utf-8"/>
   <!-- 01. common meta infos -->
   <title>{PageTitle}</title>
   <meta name="keywords" content="銭湯,小杉湯,銭湯ぐらし,通販" />
@@ -2520,11 +2521,18 @@
   const setupHeroImage = () => {
 
     const imageList = [
+      'https://sentogurashi.com/ec/hero/hero_photo_20210129.jpg',
       'https://sentogurashi.com/ec/hero/hero_photo_20200706_1.jpg',
-      'https://sentogurashi.com/ec/hero_photo.jpg',
+      'https://sentogurashi.com/ec/hero/main_hero.jpg',
     ];
 
     const messageList = [
+      {
+        heading: '小杉湯のミルク風呂',
+        text: '創業87年変わらぬ、優しいミルクの香りと柔らかな肌触りをあなたに。',
+        link: 'https://shop.sentogurashi.com/items/38914064',
+        linkText: '詳しく見る',
+      },
       {
         icon: 'https://sentogurashi.com/ec/hero/hero_icon_20200706.png',
         heading: '定期便\nはじめました',
