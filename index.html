@@ -1482,7 +1482,8 @@
       align-items: center;
     }
     
-    #amountSelectWrap::after {
+    #amountSelectWrap::after,
+    .itemOptionSelectWrap::after {
       content: '';
       display: block;
       position: absolute;
@@ -1501,10 +1502,9 @@
       display: block;
     }
 
-    #amountSelect {
+    #amountSelect,
+    .itemOption__select {
       display: block;
-      width: 80px;
-      margin-left: var(--spacing-normal);
       padding: var(--spacing-normal);
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -1516,6 +1516,26 @@
       box-sizing: border-box;
       background-color: var(--color-abstract-white);
       border-radius: 0;
+    }
+
+    #amountSelect {
+      width: 80px;
+      margin-left: var(--spacing-normal);
+    }
+
+    .itemOptionSelectWrap {
+      position: relative;
+    }
+
+    .itemOption__select {
+      width: 100%;
+      margin-bottom: var(--spacing-XLarge);
+    }
+
+    .itemOption__name {
+      display: block;
+      font-size: var(--font-size-normal);
+      margin-bottom: var(--spacing-small);
     }
 
     #openIllegalReport,
@@ -2257,7 +2277,7 @@
       this.removeClassName = removeClassName;
       this.animationEndClassName = animationEndClassName;
       this.leaveAnimationClassName = leaveAnimationClassName;
-      // hander = (e) => {} の書き方がSafariなどで未対応なためとりま
+      // handler = (e) => {} の書き方がSafariなどで未対応なためとりま
       this.handler = this.handler.bind(this);
     }
 
@@ -2488,6 +2508,17 @@
   }
 
   /**
+  * HTMLを文字列に変換
+  * @param {HTMLElement} element - DOM
+  * @return {string}
+  */
+  const serializeHTMLElement = (element) => {
+    const div = document.createElement('div');
+    div.appendChild(element);
+    return div.innerHTML;
+  }
+
+  /**
   * 子要素を削除
   * @param {HTMLElement} parent - 親
   */
@@ -2519,15 +2550,17 @@
 
   const setupHeroImage = () => {
 
-    const imageList = [
-      'https://sentogurashi.com/ec/hero/hero_photo_20210129.jpg',
-      'https://sentogurashi.com/ec/hero/hero_photo_20200706_1.jpg',
-      'https://sentogurashi.com/ec/hero/main_hero.jpg',
-    ];
-
-    const messageList = [
+    const carouselData = [
+      {
+        heading: '母の日の贈り物',
+        image: 'https://sentogurashi.com/ec/hero/hero_photo_20210420.jpg',
+        text: '今年の母の日は5月9日です。\nありがとうの気持ちをギフトにして届けませんか。',
+        link: 'https://shop.sentogurashi.com/items/43008493',
+        linkText: '詳しく見る',
+      },
       {
         heading: '小杉湯のミルク風呂',
+        image: 'https://sentogurashi.com/ec/hero/hero_photo_20210129.jpg',
         text: '創業87年変わらぬ、優しいミルクの香りと柔らかな肌触りをあなたに。',
         link: 'https://shop.sentogurashi.com/items/38914064',
         linkText: '詳しく見る',
@@ -2535,6 +2568,7 @@
       {
         icon: 'https://sentogurashi.com/ec/hero/hero_icon_20200706.png',
         heading: '定期便\nはじめました',
+        image: 'https://sentogurashi.com/ec/hero/hero_photo_20200706_1.jpg',
         text: '季節を感じるお風呂のもとで、体も心もほぐれる時間をつくります。',
         link: 'https://shop.sentogurashi.com/items/31433412',
         linkText: '定期便を見る',
@@ -2542,6 +2576,7 @@
       {
         icon: 'https://sentogurashi.com/ec/logo_stamp.svg',
         heading: '銭湯のあるくらし便',
+        image: 'https://sentogurashi.com/ec/hero/main_hero.jpg',
         text: 'いつもの毎日がちょっと特別になる。\n「ケの日のハレ」を届けます。',
         link: 'https://shop.sentogurashi.com/about',
         linkText: '詳しく読む',
@@ -2565,7 +2600,7 @@
     const indicatorRoot = document.querySelector('.js-HeroImage__indicators');
     const indicatorTemplate = getTemplate('.js-HeroImage__indicatorTemplate');
 
-    const selectorElements = imageList.map(() => {
+    const selectorElements = carouselData.map(() => {
       const indicatorElement = indicatorTemplate()
       indicatorElement.querySelector('a').addEventListener('click', (e) => {
         e.preventDefault();
@@ -2590,7 +2625,7 @@
         await fadeoutAnimation.exec();
         messageRoot.removeChild(oldMessageElement);
       }
-      const newMessageElement = messageTemplate(messageList[index]);
+      const newMessageElement = messageTemplate(carouselData[index]);
 
       messageRoot.appendChild(newMessageElement);
 
@@ -2609,7 +2644,7 @@
       displayElementBackground,
       displayElementForeground,
       selectorElements,
-      imageList,
+      imageList: carouselData.map((data) => data.image),
       autoplay: 5000,
       callback,
     })
@@ -2689,12 +2724,22 @@
     })
   };
 
+  const setupOptionSelectPatch = () => {
+    document.querySelectorAll('.itemOption__select').forEach((element) => {
+      const parent = element.parentNode;
+      const prev = element.previousSibling;
+      const content = serializeHTMLElement(element);
+      const newNode = generateHTMLElement(`<div class="itemOptionSelectWrap">${content}</div>`);
+      parent.insertBefore(newNode, prev.nextSibling);
+    })
+  }
+
   const setupPurchaseButtonBeacon = () => {
     /**
     * @param {HTMLElement} element - 対象エレメント
-    * @param {string} category - Google Analiticsカテゴリ名
-    * @param {string} action - Google Analiticsアクション名
-    * @param {string} [label] - Google Analiticsアクション名
+    * @param {string} category - Google Analyticsカテゴリ名
+    * @param {string} action - Google Analyticsアクション名
+    * @param {string} [label] - Google Analyticsアクション名
     */
     const setEvent = (element, category, action, label = '') => {
       element.addEventListener('click', () => {
@@ -2728,6 +2773,7 @@
     setupPhotoSelector();
     setupMenu();
     setupParallax();
+    setupOptionSelectPatch();
     setupPurchaseButtonBeacon();
   });
 })()

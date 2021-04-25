@@ -1636,7 +1636,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       align-items: center;
     }
     
-    #amountSelectWrap::after {
+    #amountSelectWrap::after,
+    .itemOptionSelectWrap::after {
       content: '';
       display: block;
       position: absolute;
@@ -1655,10 +1656,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       display: block;
     }
 
-    #amountSelect {
+    #amountSelect,
+    .itemOption__select {
       display: block;
-      width: 80px;
-      margin-left: var(--spacing-normal);
       padding: var(--spacing-normal);
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -1670,6 +1670,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       box-sizing: border-box;
       background-color: var(--color-abstract-white);
       border-radius: 0;
+    }
+
+    #amountSelect {
+      width: 80px;
+      margin-left: var(--spacing-normal);
+    }
+
+    .itemOptionSelectWrap {
+      position: relative;
+    }
+
+    .itemOption__select {
+      width: 100%;
+      margin-bottom: var(--spacing-XLarge);
+    }
+
+    .itemOption__name {
+      display: block;
+      font-size: var(--font-size-normal);
+      margin-bottom: var(--spacing-small);
     }
 
     #openIllegalReport,
@@ -2448,6 +2468,19 @@ window.load = init();
               <form id="purchase_form" name="menu" action="https://c.thebase.in/cart/add/sentogurashi-theshop-jp" method="post">
                 
 <div id="itemSelect">
+
+      <!-- オプション設定時ここから -->
+      <label for="x_optionSelect50967" class="itemOption__name">オプション</label>
+      <select name="options[0][variation_id]"
+              id="x_optionSelect50967"
+              class="itemOption__select"
+              required>
+              <option value="198352">
+            フラワーアレンジメント　¥ 2,000</option>
+              <option value="200128">
+            フラワーアレンジメントなし</option>
+      </select>
+      <!-- オプション設定時ここまで -->
 															<div id="amountSelectWrap" class="purchaseElement">
 					<label for="amountSelect">数量</label>
 					<select name="amount" id="amountSelect" class="amountSelect">
@@ -2698,7 +2731,7 @@ $(function(){
     <a class="Footer__companyLogo Logo Logo--company" href="https://sentogurashi.com/" target="_blank"></a>
     <div class="Footer__copyright"><small>© 銭湯のあるくらし便 All rights reserved.</small></div>
   </footer>
-  <div class="Loading js-Loading is-fadeEnd"></div>
+  <div class="Loading js-Loading"></div>
 <script>
 //@ts-check
 (() => {
@@ -2881,7 +2914,7 @@ $(function(){
     * @param {object} options
     * @param {HTMLElement} options.element - 対象Element
     * @param {string} [options.animationClassName] - アニメーション開始で付与するスタイルクラス
-    * @param {string} [options.removeEndClassName]  - アニメーション開始で除去するスタイルクラス
+    * @param {string} [options.removeClassName]  - アニメーション開始で除去するスタイルクラス
     * @param {string} [options.animationEndClassName]  - アニメーション後のスタイルクラス
     * @param {boolean} [options.leaveAnimationClassName] - アニメーション後に痕跡を残さないか
     */
@@ -2897,6 +2930,7 @@ $(function(){
       this.removeClassName = removeClassName;
       this.animationEndClassName = animationEndClassName;
       this.leaveAnimationClassName = leaveAnimationClassName;
+      // handler = (e) => {} の書き方がSafariなどで未対応なためとりま
       this.handler = this.handler.bind(this);
     }
 
@@ -2904,7 +2938,6 @@ $(function(){
     * ハンドラ
     * @return {void}
     */
-    // hander = (e) => {} の書き方がSafariなどで未対応なためとりま
     handler (e) {
       this.element.removeEventListener('transitionend', this.handler);
       this.element.removeEventListener('animationend', this.handler);
@@ -3053,7 +3086,7 @@ $(function(){
     async autoplay() {
       const { isAutoplay, autoplayInterval } = this.states;
       if (!isAutoplay) return;
-      this.next();
+      await this.next();
       await sleep(autoplayInterval);
       this.autoplay();
     }
@@ -3120,7 +3153,22 @@ $(function(){
   const generateHTMLElement = (str) => {
     const div = document.createElement('div');
     div.innerHTML = str;
-    return div.children[0];
+    /**
+    * @type {HTMLElement}
+    */
+    const child = div.children[0];
+    return child;
+  }
+
+  /**
+  * HTMLを文字列に変換
+  * @param {HTMLElement} element - DOM
+  * @return {string}
+  */
+  const serializeHTMLElement = (element) => {
+    const div = document.createElement('div');
+    div.appendChild(element);
+    return div.innerHTML;
   }
 
   /**
@@ -3144,6 +3192,9 @@ $(function(){
     const util = {
       replaceBr : str => str.replace(/\n/g, '<br>'),
     }
+    /**
+    * @type {HTMLElement}
+    */
     const dom = document.querySelector(query);
     const templateString = dom.innerText;
     const templateFunction = ejs.compile(templateString);
@@ -3152,25 +3203,38 @@ $(function(){
 
   const setupHeroImage = () => {
 
-    const imageList = [
-      'https://sentogurashi.com/ec/hero/hero_photo_20200706.jpg',
-      'https://sentogurashi.com/ec/hero_photo.jpg',
-    ];
-
-    const messageList = [
+    const carouselData = [
+      {
+        heading: '母の日の贈り物',
+        image: 'https://sentogurashi.com/ec/hero/hero_photo_20210420.jpg',
+        text: '今年の母の日は5月9日です。\nありがとうの気持ちをギフトにして届けませんか。',
+        link: 'https://shop.sentogurashi.com/items/43008493',
+        linkText: '詳しく見る',
+      },
+      {
+        heading: '小杉湯のミルク風呂',
+        image: 'https://sentogurashi.com/ec/hero/hero_photo_20210129.jpg',
+        text: '創業87年変わらぬ、優しいミルクの香りと柔らかな肌触りをあなたに。',
+        link: 'https://shop.sentogurashi.com/items/38914064',
+        linkText: '詳しく見る',
+      },
       {
         icon: 'https://sentogurashi.com/ec/hero/hero_icon_20200706.png',
-        heading: '定期便、\nはじめました。',
-        text: 'いつもの毎日がちょっと特別になる。\n「ケの日のハレ」を届けます。',
-        link: 'http://google.com',
+        heading: '定期便\nはじめました',
+        image: 'https://sentogurashi.com/ec/hero/hero_photo_20200706_1.jpg',
+        text: '季節を感じるお風呂のもとで、体も心もほぐれる時間をつくります。',
+        link: 'https://shop.sentogurashi.com/items/31433412',
         linkText: '定期便を見る',
       },
       {
-        heading: '見出しその2\n改行',
-        text: 'ふがふが',
-        link: 'http://google.com',
+        icon: 'https://sentogurashi.com/ec/logo_stamp.svg',
+        heading: '銭湯のあるくらし便',
+        image: 'https://sentogurashi.com/ec/hero/main_hero.jpg',
+        text: 'いつもの毎日がちょっと特別になる。\n「ケの日のハレ」を届けます。',
+        link: 'https://shop.sentogurashi.com/about',
+        linkText: '詳しく読む',
       }
-    ]
+    ];
 
     /**
     * @type {HTMLElement|null}
@@ -3189,7 +3253,7 @@ $(function(){
     const indicatorRoot = document.querySelector('.js-HeroImage__indicators');
     const indicatorTemplate = getTemplate('.js-HeroImage__indicatorTemplate');
 
-    const selectorElements = imageList.map(() => {
+    const selectorElements = carouselData.map(() => {
       const indicatorElement = indicatorTemplate()
       indicatorElement.querySelector('a').addEventListener('click', (e) => {
         e.preventDefault();
@@ -3214,7 +3278,7 @@ $(function(){
         await fadeoutAnimation.exec();
         messageRoot.removeChild(oldMessageElement);
       }
-      const newMessageElement = messageTemplate(messageList[index]);
+      const newMessageElement = messageTemplate(carouselData[index]);
 
       messageRoot.appendChild(newMessageElement);
 
@@ -3233,7 +3297,7 @@ $(function(){
       displayElementBackground,
       displayElementForeground,
       selectorElements,
-      imageList,
+      imageList: carouselData.map((data) => data.image),
       autoplay: 5000,
       callback,
     })
@@ -3313,12 +3377,22 @@ $(function(){
     })
   };
 
+  const setupOptionSelectPatch = () => {
+    document.querySelectorAll('.itemOption__select').forEach((element) => {
+      const parent = element.parentNode;
+      const prev = element.previousSibling;
+      const content = serializeHTMLElement(element);
+      const newNode = generateHTMLElement(`<div class="itemOptionSelectWrap">${content}</div>`);
+      parent.insertBefore(newNode, prev.nextSibling);
+    })
+  }
+
   const setupPurchaseButtonBeacon = () => {
     /**
     * @param {HTMLElement} element - 対象エレメント
-    * @param {string} category - Google Analiticsカテゴリ名
-    * @param {string} action - Google Analiticsアクション名
-    * @param {string} [label] - Google Analiticsアクション名
+    * @param {string} category - Google Analyticsカテゴリ名
+    * @param {string} action - Google Analyticsアクション名
+    * @param {string} [label] - Google Analyticsアクション名
     */
     const setEvent = (element, category, action, label = '') => {
       element.addEventListener('click', () => {
@@ -3330,19 +3404,19 @@ $(function(){
     * @type {HTMLElement | null}
     */
     const addToCartButton = document.querySelector('.purchaseButton__btn--addToCart');
-    if (addToCartButton) setEvent(addToCartButton, 'purchase', 'addToCart', 'おうちで小杉湯セット');
+    if (addToCartButton) setEvent(addToCartButton, 'purchase', 'addToCart','{ItemTitle}');
     // 再入荷問い合わせ
     /**
     * @type {HTMLElement | null}
     */
     const noItemButton = document.querySelector('.purchaseButton__btn--noItem');
-    if (noItemButton ) setEvent(noItemButton , 'purchase', 'contactForNoItem', 'おうちで小杉湯セット');
+    if (noItemButton ) setEvent(noItemButton , 'purchase', 'contactForNoItem','{ItemTitle}');
     // 販売待ちニュースレター申し込み
     /**
     * @type {HTMLElement | null}
     */
     const comingSoonButton = document.querySelector('.purchaseButton__btn--comingSoon');
-    if (noItemButton ) setEvent(noItemButton , 'purchase', 'requestNoticeForSale', 'おうちで小杉湯セット');
+    if (noItemButton ) setEvent(noItemButton , 'purchase', 'requestNoticeForSale','{ItemTitle}');
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -3352,6 +3426,7 @@ $(function(){
     setupPhotoSelector();
     setupMenu();
     setupParallax();
+    setupOptionSelectPatch();
     setupPurchaseButtonBeacon();
   });
 })()
