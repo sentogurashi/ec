@@ -2914,7 +2914,7 @@ $(function(){
     * @param {object} options
     * @param {HTMLElement} options.element - 対象Element
     * @param {string} [options.animationClassName] - アニメーション開始で付与するスタイルクラス
-    * @param {string} [options.removeEndClassName]  - アニメーション開始で除去するスタイルクラス
+    * @param {string} [options.removeClassName]  - アニメーション開始で除去するスタイルクラス
     * @param {string} [options.animationEndClassName]  - アニメーション後のスタイルクラス
     * @param {boolean} [options.leaveAnimationClassName] - アニメーション後に痕跡を残さないか
     */
@@ -2930,6 +2930,7 @@ $(function(){
       this.removeClassName = removeClassName;
       this.animationEndClassName = animationEndClassName;
       this.leaveAnimationClassName = leaveAnimationClassName;
+      // handler = (e) => {} の書き方がSafariなどで未対応なためとりま
       this.handler = this.handler.bind(this);
     }
 
@@ -2937,7 +2938,6 @@ $(function(){
     * ハンドラ
     * @return {void}
     */
-    // handler = (e) => {} の書き方がSafariなどで未対応なためとりま
     handler (e) {
       this.element.removeEventListener('transitionend', this.handler);
       this.element.removeEventListener('animationend', this.handler);
@@ -3086,7 +3086,7 @@ $(function(){
     async autoplay() {
       const { isAutoplay, autoplayInterval } = this.states;
       if (!isAutoplay) return;
-      this.next();
+      await this.next();
       await sleep(autoplayInterval);
       this.autoplay();
     }
@@ -3153,11 +3153,15 @@ $(function(){
   const generateHTMLElement = (str) => {
     const div = document.createElement('div');
     div.innerHTML = str;
-    return div.children[0];
+    /**
+    * @type {HTMLElement}
+    */
+    const child = div.children[0];
+    return child;
   }
 
   /**
-  * DOMから文字列を取得
+  * HTMLを文字列に変換
   * @param {HTMLElement} element - DOM
   * @return {string}
   */
@@ -3188,6 +3192,9 @@ $(function(){
     const util = {
       replaceBr : str => str.replace(/\n/g, '<br>'),
     }
+    /**
+    * @type {HTMLElement}
+    */
     const dom = document.querySelector(query);
     const templateString = dom.innerText;
     const templateFunction = ejs.compile(templateString);
@@ -3197,24 +3204,33 @@ $(function(){
   const setupHeroImage = () => {
 
     const imageList = [
-      'https://sentogurashi.com/ec/hero/hero_photo_20200706.jpg',
-      'https://sentogurashi.com/ec/hero_photo.jpg',
+      'https://sentogurashi.com/ec/hero/hero_photo_20210129.jpg',
+      'https://sentogurashi.com/ec/hero/hero_photo_20200706_1.jpg',
+      'https://sentogurashi.com/ec/hero/main_hero.jpg',
     ];
 
     const messageList = [
       {
+        heading: '小杉湯のミルク風呂',
+        text: '創業87年変わらぬ、優しいミルクの香りと柔らかな肌触りをあなたに。',
+        link: 'https://shop.sentogurashi.com/items/38914064',
+        linkText: '詳しく見る',
+      },
+      {
         icon: 'https://sentogurashi.com/ec/hero/hero_icon_20200706.png',
-        heading: '定期便、\nはじめました。',
-        text: 'いつもの毎日がちょっと特別になる。\n「ケの日のハレ」を届けます。',
-        link: 'http://google.com',
+        heading: '定期便\nはじめました',
+        text: '季節を感じるお風呂のもとで、体も心もほぐれる時間をつくります。',
+        link: 'https://shop.sentogurashi.com/items/31433412',
         linkText: '定期便を見る',
       },
       {
-        heading: '見出しその2\n改行',
-        text: 'ふがふが',
-        link: 'http://google.com',
+        icon: 'https://sentogurashi.com/ec/logo_stamp.svg',
+        heading: '銭湯のあるくらし便',
+        text: 'いつもの毎日がちょっと特別になる。\n「ケの日のハレ」を届けます。',
+        link: 'https://shop.sentogurashi.com/about',
+        linkText: '詳しく読む',
       }
-    ]
+    ];
 
     /**
     * @type {HTMLElement|null}
@@ -3384,19 +3400,19 @@ $(function(){
     * @type {HTMLElement | null}
     */
     const addToCartButton = document.querySelector('.purchaseButton__btn--addToCart');
-    if (addToCartButton) setEvent(addToCartButton, 'purchase', 'addToCart', 'おうちで小杉湯セット');
+    if (addToCartButton) setEvent(addToCartButton, 'purchase', 'addToCart','{ItemTitle}');
     // 再入荷問い合わせ
     /**
     * @type {HTMLElement | null}
     */
     const noItemButton = document.querySelector('.purchaseButton__btn--noItem');
-    if (noItemButton ) setEvent(noItemButton , 'purchase', 'contactForNoItem', 'おうちで小杉湯セット');
+    if (noItemButton ) setEvent(noItemButton , 'purchase', 'contactForNoItem','{ItemTitle}');
     // 販売待ちニュースレター申し込み
     /**
     * @type {HTMLElement | null}
     */
     const comingSoonButton = document.querySelector('.purchaseButton__btn--comingSoon');
-    if (noItemButton ) setEvent(noItemButton , 'purchase', 'requestNoticeForSale', 'おうちで小杉湯セット');
+    if (noItemButton ) setEvent(noItemButton , 'purchase', 'requestNoticeForSale','{ItemTitle}');
   }
 
   document.addEventListener('DOMContentLoaded', () => {

@@ -1119,7 +1119,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     }
 
     /**
-    * Header
+    * Loading
     */
     .Loading {
       position: fixed;
@@ -1421,6 +1421,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       transition: var(--transition-hover);
     }
 
+    .ProductDetail__mainText .inlineHeading {
+      font-size: 2rem;
+    }
+
     .ProductDetail__mainText .caution {
       color: var(--color-semantic-alert);
     }
@@ -1508,7 +1512,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       align-items: center;
     }
     
-    #amountSelectWrap::after {
+    #amountSelectWrap::after,
+    .itemOptionSelectWrap::after {
       content: '';
       display: block;
       position: absolute;
@@ -1527,10 +1532,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       display: block;
     }
 
-    #amountSelect {
+    #amountSelect,
+    .itemOption__select {
       display: block;
-      width: 80px;
-      margin-left: var(--spacing-normal);
       padding: var(--spacing-normal);
       -webkit-appearance: none;
       -moz-appearance: none;
@@ -1542,6 +1546,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       box-sizing: border-box;
       background-color: var(--color-abstract-white);
       border-radius: 0;
+    }
+
+    #amountSelect {
+      width: 80px;
+      margin-left: var(--spacing-normal);
+    }
+
+    .itemOptionSelectWrap {
+      position: relative;
+    }
+
+    .itemOption__select {
+      width: 100%;
+      margin-bottom: var(--spacing-XLarge);
+    }
+
+    .itemOption__name {
+      display: block;
+      font-size: var(--font-size-normal);
+      margin-bottom: var(--spacing-small);
     }
 
     #openIllegalReport,
@@ -1660,8 +1684,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       margin-top: var(--spacing-XXLarge);
     }
   </style>
-  	
-
 
 <link rel="stylesheet" href="/asset/shop/BASEshop-4d7084a38bbe48e9eeed.css"></head>
 
@@ -2358,7 +2380,7 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
     * @param {object} options
     * @param {HTMLElement} options.element - 対象Element
     * @param {string} [options.animationClassName] - アニメーション開始で付与するスタイルクラス
-    * @param {string} [options.removeEndClassName]  - アニメーション開始で除去するスタイルクラス
+    * @param {string} [options.removeClassName]  - アニメーション開始で除去するスタイルクラス
     * @param {string} [options.animationEndClassName]  - アニメーション後のスタイルクラス
     * @param {boolean} [options.leaveAnimationClassName] - アニメーション後に痕跡を残さないか
     */
@@ -2374,7 +2396,7 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
       this.removeClassName = removeClassName;
       this.animationEndClassName = animationEndClassName;
       this.leaveAnimationClassName = leaveAnimationClassName;
-      // hander = (e) => {} の書き方がSafariなどで未対応なためとりま
+      // handler = (e) => {} の書き方がSafariなどで未対応なためとりま
       this.handler = this.handler.bind(this);
     }
 
@@ -2597,7 +2619,22 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
   const generateHTMLElement = (str) => {
     const div = document.createElement('div');
     div.innerHTML = str;
-    return div.children[0];
+    /**
+    * @type {HTMLElement}
+    */
+    const child = div.children[0];
+    return child;
+  }
+
+  /**
+  * HTMLを文字列に変換
+  * @param {HTMLElement} element - DOM
+  * @return {string}
+  */
+  const serializeHTMLElement = (element) => {
+    const div = document.createElement('div');
+    div.appendChild(element);
+    return div.innerHTML;
   }
 
   /**
@@ -2621,6 +2658,9 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
     const util = {
       replaceBr : str => str.replace(/\n/g, '<br>'),
     }
+    /**
+    * @type {HTMLElement}
+    */
     const dom = document.querySelector(query);
     const templateString = dom.innerText;
     const templateFunction = ejs.compile(templateString);
@@ -2799,12 +2839,22 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
     })
   };
 
+  const setupOptionSelectPatch = () => {
+    document.querySelectorAll('.itemOption__select').forEach((element) => {
+      const parent = element.parentNode;
+      const prev = element.previousSibling;
+      const content = serializeHTMLElement(element);
+      const newNode = generateHTMLElement(`<div class="itemOptionSelectWrap">${content}</div>`);
+      parent.insertBefore(newNode, prev.nextSibling);
+    })
+  }
+
   const setupPurchaseButtonBeacon = () => {
     /**
     * @param {HTMLElement} element - 対象エレメント
-    * @param {string} category - Google Analiticsカテゴリ名
-    * @param {string} action - Google Analiticsアクション名
-    * @param {string} [label] - Google Analiticsアクション名
+    * @param {string} category - Google Analyticsカテゴリ名
+    * @param {string} action - Google Analyticsアクション名
+    * @param {string} [label] - Google Analyticsアクション名
     */
     const setEvent = (element, category, action, label = '') => {
       element.addEventListener('click', () => {
@@ -2816,19 +2866,19 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
     * @type {HTMLElement | null}
     */
     const addToCartButton = document.querySelector('.purchaseButton__btn--addToCart');
-    if (addToCartButton) setEvent(addToCartButton, 'purchase', 'addToCart', 'おうちで小杉湯セット');
+    if (addToCartButton) setEvent(addToCartButton, 'purchase', 'addToCart','{ItemTitle}');
     // 再入荷問い合わせ
     /**
     * @type {HTMLElement | null}
     */
     const noItemButton = document.querySelector('.purchaseButton__btn--noItem');
-    if (noItemButton ) setEvent(noItemButton , 'purchase', 'contactForNoItem', 'おうちで小杉湯セット');
+    if (noItemButton ) setEvent(noItemButton , 'purchase', 'contactForNoItem','{ItemTitle}');
     // 販売待ちニュースレター申し込み
     /**
     * @type {HTMLElement | null}
     */
     const comingSoonButton = document.querySelector('.purchaseButton__btn--comingSoon');
-    if (noItemButton ) setEvent(noItemButton , 'purchase', 'requestNoticeForSale', 'おうちで小杉湯セット');
+    if (noItemButton ) setEvent(noItemButton , 'purchase', 'requestNoticeForSale','{ItemTitle}');
   }
 
   document.addEventListener('DOMContentLoaded', () => {
@@ -2838,6 +2888,7 @@ IKEUCHI ORGANICのバスタオル、木村石鹸の洗剤SOMALI、そしてハ�
     setupPhotoSelector();
     setupMenu();
     setupParallax();
+    setupOptionSelectPatch();
     setupPurchaseButtonBeacon();
   });
 })()
