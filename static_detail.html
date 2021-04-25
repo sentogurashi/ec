@@ -3203,15 +3203,17 @@ $(function(){
 
   const setupHeroImage = () => {
 
-    const imageList = [
-      'https://sentogurashi.com/ec/hero/hero_photo_20210129.jpg',
-      'https://sentogurashi.com/ec/hero/hero_photo_20200706_1.jpg',
-      'https://sentogurashi.com/ec/hero/main_hero.jpg',
-    ];
-
-    const messageList = [
+    const carouselData = [
+      {
+        heading: '母の日の贈り物',
+        image: 'https://sentogurashi.com/ec/hero/hero_photo_20210420.jpg',
+        text: '今年の母の日は5月9日です。\nありがとうの気持ちをギフトにして届けませんか。',
+        link: 'https://shop.sentogurashi.com/items/43008493',
+        linkText: '詳しく見る',
+      },
       {
         heading: '小杉湯のミルク風呂',
+        image: 'https://sentogurashi.com/ec/hero/hero_photo_20210129.jpg',
         text: '創業87年変わらぬ、優しいミルクの香りと柔らかな肌触りをあなたに。',
         link: 'https://shop.sentogurashi.com/items/38914064',
         linkText: '詳しく見る',
@@ -3219,6 +3221,7 @@ $(function(){
       {
         icon: 'https://sentogurashi.com/ec/hero/hero_icon_20200706.png',
         heading: '定期便\nはじめました',
+        image: 'https://sentogurashi.com/ec/hero/hero_photo_20200706_1.jpg',
         text: '季節を感じるお風呂のもとで、体も心もほぐれる時間をつくります。',
         link: 'https://shop.sentogurashi.com/items/31433412',
         linkText: '定期便を見る',
@@ -3226,6 +3229,7 @@ $(function(){
       {
         icon: 'https://sentogurashi.com/ec/logo_stamp.svg',
         heading: '銭湯のあるくらし便',
+        image: 'https://sentogurashi.com/ec/hero/main_hero.jpg',
         text: 'いつもの毎日がちょっと特別になる。\n「ケの日のハレ」を届けます。',
         link: 'https://shop.sentogurashi.com/about',
         linkText: '詳しく読む',
@@ -3249,7 +3253,7 @@ $(function(){
     const indicatorRoot = document.querySelector('.js-HeroImage__indicators');
     const indicatorTemplate = getTemplate('.js-HeroImage__indicatorTemplate');
 
-    const selectorElements = imageList.map(() => {
+    const selectorElements = carouselData.map(() => {
       const indicatorElement = indicatorTemplate()
       indicatorElement.querySelector('a').addEventListener('click', (e) => {
         e.preventDefault();
@@ -3274,7 +3278,7 @@ $(function(){
         await fadeoutAnimation.exec();
         messageRoot.removeChild(oldMessageElement);
       }
-      const newMessageElement = messageTemplate(messageList[index]);
+      const newMessageElement = messageTemplate(carouselData[index]);
 
       messageRoot.appendChild(newMessageElement);
 
@@ -3293,7 +3297,7 @@ $(function(){
       displayElementBackground,
       displayElementForeground,
       selectorElements,
-      imageList,
+      imageList: carouselData.map((data) => data.image),
       autoplay: 5000,
       callback,
     })
